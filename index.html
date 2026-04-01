@@ -86,7 +86,7 @@
                 
                 <div class="prize-card"><img src="dyson.png" class="prize-img"><div class="prize-name">Dyson</div></div>
                 <div class="prize-card car-main"><img src="elantra.png" class="prize-img"><div class="prize-name">Elantra</div></div>
-                <div class="prize-card"><img src="watch.png" class="prize-img"><div class="prize-name">Watch</div></div>
+                <div class="prize-card"><img src="cushion.png" class="prize-img"><div class="prize-name">Кушон</div></div>
                 
                 <div class="prize-card"><img src="money.png" class="prize-img"><div class="prize-name">100 000₸</div></div>
                 <div class="prize-card"><img src="parfum.png" class="prize-img"><div class="prize-name">Парфюм</div></div>
@@ -141,7 +141,6 @@
             if(userId === "ID ЖОҚ") return alert("Бот арқылы кіріңіз!");
             el.classList.add('shake');
             try {
-                // ЖАҢАРТЫЛҒАН WEBHOOK СІЛТЕМЕСІ
                 const res = await fetch("https://hook.eu1.make.com/c4m013ql2v5d8sc6xlpv42txzfj54fwr", {
                     method: 'POST', headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({ id: userId })
@@ -160,7 +159,7 @@
                     }, 1500);
                 } else {
                     el.classList.remove('shake');
-                    alert("ID кестеде табылмады немесе басқа қате!");
+                    alert("ID кестеде табылмады!");
                 }
             } catch (e) { 
                 el.classList.remove('shake');
