@@ -141,22 +141,21 @@
             if(userId === "ID ЖОҚ") return alert("Бот арқылы кіріңіз!");
             el.classList.add('shake');
             try {
-                const res = await fetch("https://hook.eu1.make.com/c4m013ql2v5d8sc6xlpv42txzfj54fwr", {
+                // ЖАҢА ВЕБХУК СІЛТЕМЕСІ ҚОЙЫЛДЫ:
+                const res = await fetch("https://hook.eu1.make.com/spvbwvi18setn0khiot7y91sj6j0ibt8", {
                     method: 'POST', headers: {'Content-Type': 'application/json'},
-                    // Осы жерде action: "get_prize" қосылды, Make.com роутері дұрыс істеуі үшін
                     body: JSON.stringify({ id: userId, action: "get_prize" })
                 });
                 const data = await res.json();
                 
                 if(data.status === 'success') {
-                    // Make.com-нан келген сыйлық атауына қарай суретті автоматты түрде таңдау логикасы
                     let imgPath = data.img;
                     if (!imgPath) {
                         if (data.prize === "Парфюм") imgPath = "parfum.png";
                         else if (data.prize === "Кушон") imgPath = "cushion.png";
                         else if (data.prize === "Косметичка") imgPath = "bag.png";
                         else if (data.prize === "Косметика") imgPath = "cosmitic.png";
-                        else imgPath = "iphone.png"; // Басқа сыйлықтар үшін стандартты сурет
+                        else imgPath = "iphone.png";
                     }
 
                     setTimeout(() => {
