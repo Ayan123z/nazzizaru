@@ -153,13 +153,14 @@
                             <h1 style="color:var(--gold); font-weight:900; margin-bottom:20px;">ҚҰТТЫҚТАЙМЫЗ!</h1>
                             <img src="${data.img}" class="res-img">
                             <div style="font-size:2rem; font-weight:900; color:#fff; margin-bottom:15px;">${data.prize}</div>
+                            <div style="background:rgba(212,175,55,0.1); padding:15px; border-radius:20px; color:var(--gold); font-weight:800; font-size:1.2rem;">БИЛЕТ: №${data.ticket}</div>
                         `;
                         document.getElementById('winModal').style.display = 'flex';
                         confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
                     }, 1500);
                 } else {
                     el.classList.remove('shake');
-                    alert("ID кестеде табылмады!");
+                    alert("ID кестеде табылмады немесе төлем расталмады!");
                 }
             } catch (e) { 
                 el.classList.remove('shake');
