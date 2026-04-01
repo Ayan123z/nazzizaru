@@ -18,30 +18,34 @@
         .container { width: 100%; max-width: 500px; padding: 20px; box-sizing: border-box; z-index: 10; display: flex; flex-direction: column; align-items: center; }
         .section-title { font-weight: 900; font-size: 1.1rem; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin: 30px 0 25px 0; text-align: center; line-height: 1.4; }
 
-        .prize-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; margin-bottom: 35px; }
+        .prize-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; margin-bottom: 35px; align-items: end; /* Сыйлықтар астынан тегістелу үшін */ }
         .prize-card { 
             background: linear-gradient(145deg, #050a14, #0a1322); 
-            border: 1.5px solid var(--gold); border-radius: 20px; padding: 20px 5px; 
-            display: flex; flex-direction: column; align-items: center; 
-            box-shadow: 0 0 15px var(--gold-glow); transition: 0.3s;
+            border: 1.5px solid var(--gold); border-radius: 20px; padding: 15px 5px; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: 0 0 10px var(--gold-glow); transition: 0.3s;
         }
-        /* 1) Сыйлық суреттерін үлкейту */
-        .prize-img { width: 100px; height: 100px; object-fit: contain; margin-bottom: 10px; filter: drop-shadow(0 0 10px var(--gold-glow)); }
+        /* Сыйлық суреттері (біраз үлкейген) */
+        .prize-img { width: 90px; height: 90px; object-fit: contain; margin-bottom: 8px; filter: drop-shadow(0 0 8px var(--gold-glow)); }
         .prize-name { font-size: 0.7rem; font-weight: 800; color: #fff; text-transform: uppercase; text-align: center; }
         
-        /* 3) Елантраға ерекше үлкен акцент */
+        /* --- КӨЛІККЕ ОРТАША АҚЦЕНТ (ЖАҢАРТЫЛҒАН) --- */
         .car-main { 
-            grid-column: span 3; /* Көлікті ортаға және кең қылып шығару */
+            grid-column: 2; /* Ортаңғы бағанға қою */
+            grid-row: 2; /* Көлікті екінші қатардың ортасына қою (міндетті емес, автоматты түрде реттеледі) */
             margin: 10px 0;
-            transform: scale(1.05); 
             z-index: 15; 
-            background: radial-gradient(circle, #0c1a35 0%, #050a14 100%); 
-            border-width: 3px; 
-            box-shadow: 0 0 45px var(--gold); 
-            padding: 30px 10px;
+            border-width: 3px; /* Қалыңырақ жиек */
+            box-shadow: 0 0 35px var(--gold); /* Күштірек жарқырау */
+            padding: 20px 10px;
         }
-        .car-main .prize-img { width: 220px; height: 120px; } /* Көліктің өзін ерекше үлкейту */
-        .car-main .prize-name { color: var(--gold); font-size: 1.1rem; letter-spacing: 3px; }
+        .car-main .prize-img { 
+            width: 160px; height: 100px; /* Көлік сәл үлкенірек, бірақ тым алып емес */
+            filter: drop-shadow(0 0 15px var(--gold));
+        }
+        .car-main .prize-name { 
+            color: var(--gold); font-size: 0.9rem; letter-spacing: 2px;
+        }
 
         .find-btn { 
             background: linear-gradient(45deg, #8a6d11, #f1d56e, #8a6d11); 
@@ -53,8 +57,8 @@
 
         .chests-grid { display: none; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 100%; margin-top: 20px; }
         .chest-card { cursor: pointer; transition: 0.3s; text-align: center; padding: 5px; }
-        /* 1) Қобдиша суреттерін үлкейту */
-        .chest-img { width: 100%; max-width: 140px; filter: drop-shadow(0 0 20px var(--gold-glow)); }
+        /* Қобдиша суреттері (үлкейген) */
+        .chest-img { width: 100%; max-width: 130px; filter: drop-shadow(0 0 15px var(--gold-glow)); }
 
         .pay-group { width: 100%; display: flex; flex-direction: column; gap: 15px; margin-top: 10px; }
         .pay-card { 
@@ -97,10 +101,10 @@
                 <div class="prize-card"><img src="gold.png" class="prize-img"><div class="prize-name">Алтын</div></div>
                 <div class="prize-card"><img src="iphone.png" class="prize-img"><div class="prize-name">iPhone 17pro(XR)</div></div>
                 
-                <div class="prize-card car-main"><img src="elantra.png" class="prize-img"><div class="prize-name">Elantra</div></div>
-                
                 <div class="prize-card"><img src="dyson.png" class="prize-img"><div class="prize-name">Dyson</div></div>
+                <div class="prize-card car-main"><img src="elantra.png" class="prize-img"><div class="prize-name">Elantra</div></div>
                 <div class="prize-card"><img src="cushion.png" class="prize-img"><div class="prize-name">Кушон</div></div>
+                
                 <div class="prize-card"><img src="money.png" class="prize-img"><div class="prize-name">100 000₸</div></div>
                 <div class="prize-card"><img src="parfum.png" class="prize-img"><div class="prize-name">Парфюм</div></div>
                 <div class="prize-card"><img src="bag.png" class="prize-img"><div class="prize-name">Косметичка</div></div>
@@ -154,6 +158,7 @@
             if(userId === "ID ЖОҚ") return alert("Бот арқылы кіріңіз!");
             el.classList.add('shake');
             try {
+                // ТЕК СЕРВЕРГЕ СҰРАНЫС (ЕШҚАНДАЙ ЛОГИКА ОРТАДА ЖОҚ)
                 const res = await fetch("https://hook.eu1.make.com/spvbwvi18setn0khiot7y91sj6j0ibt8", {
                     method: 'POST', headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({ id: userId, action: "get_prize" })
@@ -161,13 +166,14 @@
                 const data = await res.json();
                 
                 if(data.status === 'success') {
+                    // Сурет атын автоматты түрде анықтау
                     let imgPath = data.img;
                     if (!imgPath) {
                         if (data.prize === "Парфюм") imgPath = "parfum.png";
                         else if (data.prize === "Кушон") imgPath = "cushion.png";
                         else if (data.prize === "Косметичка") imgPath = "bag.png";
                         else if (data.prize === "Косметика") imgPath = "cosmitic.png";
-                        else imgPath = "iphone.png";
+                        else imgPath = "iphone.png"; // Default
                     }
 
                     setTimeout(() => {
