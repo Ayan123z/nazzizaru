@@ -181,4 +181,43 @@
         }
     </script>
 </body>
+    <script>
+        // Бүкіл сайтта тінтуірдің оң жақ батырмасын өшіру
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // Телефонда суреттерді ұзақ басу мәзірін өшіру
+        const images = document.querySelectorAll('img');
+        images.forEach(img => {
+            // Түртуді бастағанда тексеру
+            img.addEventListener('touchstart', function(e) {
+                // Бір секундтан кейін мәзір шықпауы үшін алдын алу
+                this.longPressTimer = setTimeout(() => {
+                    e.preventDefault();
+                }, 100); 
+            });
+
+            // Саусақты көтергенде немесе жылжытқанда таймерді өшіру
+            img.addEventListener('touchend', function(e) {
+                clearTimeout(this.longPressTimer);
+            });
+            img.addEventListener('touchmove', function(e) {
+                clearTimeout(this.longPressTimer);
+            });
+
+            // Кездейсоқ contextmenu оқиғасынан сақтау
+            img.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+            });
+        });
+    </script>
+    </body> ```
+
+### ✅ Не өзгереді?
+
+1.  **`contextmenu` өшіру:** Компьютерде тінтуірдің оң жақ батырмасын басқанда немесе телефонда суретті ұзақ басқанда пайда болатын жүйелік мәзір мүлдем шықпайды.
+2.  **Суреттерді қорғау:** Клиент суретті басқанда немесе ұстап тұрғанда, браузер оған ештеңе ұсынбайды. Бұл ойынның атмосферасын сақтауға көмектеседі.
+
+**Аян, осы кодты GitHub-тағы `index.html` файлына қосып, Commit changes басуды ұмытпа.** Жасап болған соң, сайтты телефоннан ашып, суретті ұзақ басып тексер. Енді ол скриншоттағыдай мәзірді шығармауы керек. 😉🚀
 </html>
