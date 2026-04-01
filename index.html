@@ -18,7 +18,6 @@
         .container { width: 100%; max-width: 500px; padding: 20px; box-sizing: border-box; z-index: 10; display: flex; flex-direction: column; align-items: center; }
         .section-title { font-weight: 900; font-size: 1.1rem; color: var(--gold); letter-spacing: 4px; text-transform: uppercase; margin: 30px 0 20px 0; text-align: center; }
 
-        /* Сыйлықтар витринасы - ІРІ ЖӘНЕ ЖАРҚЫРАҒАН */
         .prize-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 100%; margin-bottom: 35px; }
         .prize-card { 
             background: linear-gradient(145deg, #050a14, #0a1322); 
@@ -29,12 +28,10 @@
         .prize-img { width: 85px; height: 85px; object-fit: contain; margin-bottom: 10px; filter: drop-shadow(0 0 10px var(--gold-glow)); }
         .prize-name { font-size: 0.7rem; font-weight: 800; color: #fff; text-transform: uppercase; text-align: center; }
         
-        /* Көлік (Elantra) - ОРТАДАҒЫ ГИГАНТ */
         .car-main { grid-column: 2; grid-row: 2; transform: scale(1.25); z-index: 15; background: radial-gradient(circle, #0c1a35 0%, #050a14 100%); border-width: 3px; box-shadow: 0 0 40px var(--gold); }
         .car-main .prize-img { width: 110px; height: 90px; }
         .car-main .prize-name { color: var(--gold); font-size: 0.75rem; }
 
-        /* Батырмалар */
         .find-btn { 
             background: linear-gradient(45deg, #8a6d11, #f1d56e, #8a6d11); 
             color: #000; border: none; width: 100%; padding: 25px; border-radius: 60px; 
@@ -47,7 +44,6 @@
         .chest-card { cursor: pointer; transition: 0.3s; text-align: center; padding: 10px; }
         .chest-img { width: 100%; max-width: 110px; filter: drop-shadow(0 0 15px var(--gold-glow)); }
 
-        /* Төлем бөлімі */
         .pay-group { width: 100%; display: flex; flex-direction: column; gap: 15px; margin-top: 10px; }
         .pay-card { 
             background: rgba(255,255,255,0.03); border: 2px solid rgba(212, 175, 55, 0.4); 
@@ -57,7 +53,6 @@
         .pay-title { color: #fff; font-weight: 900; font-size: 1.5rem; margin-bottom: 5px; }
         .pay-sub { color: var(--gold); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
 
-        /* Телеграм бот батырмасы */
         .tg-btn {
             display: flex; align-items: center; justify-content: center; gap: 12px;
             background: #24A1DE; color: #fff; text-decoration: none; width: 100%;
@@ -66,7 +61,6 @@
         }
         .tg-logo { width: 30px; height: 30px; fill: white; }
 
-        /* Модаль */
         .modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.99); display:none; align-items:center; justify-content:center; z-index:2000; }
         .modal-box { background: #050a14; border: 3px solid var(--gold); border-radius: 50px; width: 90%; max-width: 380px; padding: 60px 20px; text-align: center; }
         .res-img { width: 200px; margin-bottom: 30px; filter: drop-shadow(0 0 30px var(--gold)); }
@@ -88,7 +82,7 @@
             <div class="prize-grid">
                 <div class="prize-card"><img src="cosmitic.png" class="prize-img"><div class="prize-name">Косметика</div></div>
                 <div class="prize-card"><img src="gold.png" class="prize-img"><div class="prize-name">Алтын</div></div>
-                <div class="prize-card"><img src="iphone.png" class="prize-img"><div class="prize-name">iPhone 17 Pro (XR)</div></div>
+                <div class="prize-card"><img src="iphone.png" class="prize-img"><div class="prize-name">iPhone 17 Pro</div></div>
                 
                 <div class="prize-card"><img src="dyson.png" class="prize-img"><div class="prize-name">Dyson</div></div>
                 <div class="prize-card car-main"><img src="elantra.png" class="prize-img"><div class="prize-name">Elantra</div></div>
@@ -147,27 +141,31 @@
             if(userId === "ID ЖОҚ") return alert("Бот арқылы кіріңіз!");
             el.classList.add('shake');
             try {
-                const res = await fetch("https://hook.eu1.make.com/mbn57bbxp3n69fd92g9o3weensgbwnob", {
+                // ЖАҢАРТЫЛҒАН WEBHOOK СІЛТЕМЕСІ
+                const res = await fetch("https://hook.eu1.make.com/c4m013ql2v5d8sc6xlpv42txzfj54fwr", {
                     method: 'POST', headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ user_id: userId })
+                    body: JSON.stringify({ id: userId })
                 });
                 const data = await res.json();
+                
                 if(data.status === 'success') {
                     setTimeout(() => {
                         document.getElementById('resultArea').innerHTML = `
                             <h1 style="color:var(--gold); font-weight:900; margin-bottom:20px;">ҚҰТТЫҚТАЙМЫЗ!</h1>
-                            <img src="${data.prize_img}" class="res-img">
-                            <div style="font-size:2rem; font-weight:900; color:#fff; margin-bottom:15px;">${data.prize_name}</div>
-                            <div style="background:rgba(212,175,55,0.1); padding:15px; border-radius:20px; color:var(--gold); font-weight:800; font-size:1.2rem;">БИЛЕТ: №${data.ticket_num}</div>
+                            <img src="${data.img}" class="res-img">
+                            <div style="font-size:2rem; font-weight:900; color:#fff; margin-bottom:15px;">${data.prize}</div>
                         `;
                         document.getElementById('winModal').style.display = 'flex';
                         confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
                     }, 1500);
                 } else {
                     el.classList.remove('shake');
-                    alert(data.message || "Төлем расталмаған!");
+                    alert("ID кестеде табылмады немесе басқа қате!");
                 }
-            } catch (e) { alert("Сервермен байланыс үзілді"); }
+            } catch (e) { 
+                el.classList.remove('shake');
+                alert("Сервермен байланыс үзілді"); 
+            }
         }
     </script>
 </body>
