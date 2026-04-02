@@ -8,16 +8,16 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <style>
-        :root { --gold: #d4af37; --gold-glow: rgba(212, 175, 55, 0.4); --navy: #000814; }
+        :root { --gold: #d4af37; --gold-glow: rgba(212, 175, 55, 0.4); --navy: #000b1a; }
         body { 
             background: var(--navy); color: #fff; font-family: 'Montserrat', sans-serif; 
             margin: 0; overflow: hidden; -webkit-tap-highlight-color: transparent;
         }
         
-        /* ✨ АЛТЫН ЖҰЛДЫЗШАЛАР ТІЗБЕГІ */
+        /* ✨ АЛТЫН ЖҰЛДЫЗДЫ ТІЗБЕКТЕР (NETWORK EFFECT) */
         #particles-js { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            z-index: 1; pointer-events: none; opacity: 0.6;
+            z-index: 1; pointer-events: none; opacity: 0.5;
         }
 
         .container { 
@@ -40,53 +40,55 @@
         .prize-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 95%; margin: 15px 0; }
         
         .grid-item { 
-            background: rgba(255, 255, 255, 0.03); /* Празрачный */
-            border: 1px solid rgba(212, 175, 55, 0.15); 
+            background: rgba(255, 255, 255, 0.02); /* Празрачный */
+            border: 1px solid rgba(212, 175, 55, 0.12); 
             border-radius: 15px; padding: 22px 5px; 
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            backdrop-filter: blur(4px);
-            animation: floating 3.5s ease-in-out infinite;
+            backdrop-filter: blur(3px);
+            animation: floating 4s ease-in-out infinite;
         }
-        .grid-item img { width: 85%; height: 65px; object-fit: contain; }
+        .grid-item img { width: 85%; height: 60px; object-fit: contain; }
         .grid-item span { 
             font-size: 0.55rem; font-weight: 800; margin-top: 10px; 
             color: #eee; text-align: center; text-transform: uppercase;
         }
 
-        /* 🚗 ELANTRA ACCENT */
+        /* 🚗 ELANTRA CENTER ACCENT (1.2X) */
         .car-accent { 
             grid-column: 2; grid-row: 2; border: 2px solid var(--gold); 
-            box-shadow: 0 0 25px var(--gold-glow); transform: scale(1.1); 
+            box-shadow: 0 0 25px var(--gold-glow); transform: scale(1.15); 
             position: relative; background: rgba(212, 175, 55, 0.05);
         }
         .main-badge {
             position: absolute; top: -14px; background: linear-gradient(to right, #bf953f, #fcf6ba, #bf953f);
             color: #000; font-size: 0.5rem; font-weight: 900;
-            padding: 3px 10px; border-radius: 4px; border: 1px solid #000;
+            padding: 2px 8px; border-radius: 4px; border: 1px solid #000;
+            z-index: 30;
         }
 
-        /* БАЯУ ҚОЗҒАЛЫС АНИМАЦИЯСЫ */
+        /* БАЯУ ӘСЕМ ҚОЗҒАЛЫС */
         @keyframes floating {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-8px) rotate(1deg); }
+            50% { transform: translateY(-7px) rotate(0.5deg); }
         }
 
         .btn-main { 
             background: linear-gradient(45deg, #bf953f, #fcf6ba, #bf953f); 
-            color: #000; border: none; width: 85%; padding: 22px; 
+            color: #000; border: none; width: 85%; padding: 20px; 
             border-radius: 50px; font-size: 1rem; font-weight: 900; 
-            margin-top: 30px; cursor: pointer; text-transform: uppercase;
+            margin-top: 25px; cursor: pointer; text-transform: uppercase;
             box-shadow: 0 10px 25px rgba(212,175,55,0.3);
         }
 
         #chestView { display: none; width: 100%; text-align: center; }
         .chests-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 15px; }
-        .box-item img { animation: floating 4s ease-in-out infinite; width: 100%; }
+        .box-item img { animation: floating 3s ease-in-out infinite; width: 100%; }
 
-        .modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,8,20,0.98); display:none; align-items:center; justify-content:center; z-index:2000; }
+        .modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,11,26,0.98); display:none; align-items:center; justify-content:center; z-index:2000; }
         .modal-box { border: 2px solid var(--gold); border-radius: 30px; width: 85%; padding: 35px 20px; text-align: center; background: #000; box-shadow: 0 0 50px var(--gold-glow); }
         
-        #wOut img { width: 180px; height: auto; margin-bottom: 20px; filter: drop-shadow(0 0 15px var(--gold)); }
+        #wOut img { width: 180px; height: auto; margin-bottom: 20px; filter: drop-shadow(0 0 15px var(--gold)); animation: prizePop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes prizePop { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
     </style>
 </head>
 <body>
@@ -137,17 +139,31 @@
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
-        // ✨ АЛТЫН ШАҢДАРДЫҢ ЖОҒАРЫ ҚАРАЙ ҚОЗҒАЛЫСЫ
+        // ✨ АЛТЫН ТІЗБЕКТЕРДІҢ ЖОҒАРЫ ҚАРАЙ ҚОЗҒАЛЫСЫ
         particlesJS("particles-js", {
             "particles": {
-                "number": { "value": 100 },
+                "number": { "value": 60, "density": { "enable": true, "value_area": 800 } },
                 "color": { "value": "#d4af37" },
                 "shape": { "type": "circle" },
-                "opacity": { "value": 0.5, "random": true },
-                "size": { "value": 2, "random": true },
-                "line_linked": { "enable": false },
-                "move": { "enable": true, "speed": 0.8, "direction": "top", "random": true, "out_mode": "out" }
-            }
+                "opacity": { "value": 0.4, "random": true },
+                "size": { "value": 2.5, "random": true },
+                "line_linked": { 
+                    "enable": true, 
+                    "distance": 150, 
+                    "color": "#d4af37", 
+                    "opacity": 0.3, 
+                    "width": 1 
+                },
+                "move": { 
+                    "enable": true, 
+                    "speed": 1, 
+                    "direction": "top", 
+                    "random": true, 
+                    "out_mode": "out" 
+                }
+            },
+            "interactivity": { "events": { "onhover": { "enable": false } } },
+            "retina_detect": true
         });
 
         const tg = window.Telegram.WebApp; tg.expand();
@@ -156,7 +172,7 @@
         const att = urlParams.get('attempt') || "ID-" + Math.floor(Math.random() * 99999);
         
         // 🔐 ТЕК 1 РЕТ АШУ ТЕКСЕРІСІ
-        let isPlayed = localStorage.getItem('played_' + att);
+        let isPlayed = localStorage.getItem('p_' + att);
 
         const prizeImages = {
             "Алтын": "golden.png", "iPhone 17 Pro (XR)": "iphone.png", "Dyson": "dyson.png", "Парфюм": "parfum.png",
@@ -177,7 +193,7 @@
         function revealDrama(el) {
             if(isPlayed) return;
             isPlayed = true;
-            localStorage.setItem('played_' + att, 'true');
+            localStorage.setItem('p_' + att, 'true');
 
             setTimeout(() => {
                 const imgFile = prizeImages[p] || "chest.png";
@@ -187,7 +203,7 @@
                 `;
                 document.getElementById('wId').innerText = "СЫЙЛЫҚ ID: " + att; 
                 document.getElementById('winModal').style.display='flex';
-                confetti({particleCount: 180, spread: 80, origin: { y: 0.7 }});
+                confetti({particleCount: 180, spread: 80, origin: { y: 0.7 }, colors: ['#d4af37', '#ffffff']});
             }, 800); 
         }
     </script>
