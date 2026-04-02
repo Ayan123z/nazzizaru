@@ -3,80 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nazimen BNS | Premium Grid</title>
+    <title>Nazimen BNS | Premium Experience</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         :root { --gold: #d4af37; --gold-glow: rgba(212, 175, 55, 0.4); }
+        
         body { 
-            background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%); 
+            background: #000; 
             color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; 
             overflow-x: hidden; -webkit-tap-highlight-color: transparent;
+            position: relative;
         }
-        /* НӘЗІК АЛТЫН ЭФФЕКТ */
-        body::before {
-            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+
+        /* НӘЗІК ҚОЗҒАЛАТЫН АЛТЫН ШАҢ ЭФФЕКТІСІ */
+        .gold-dust {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: url('https://www.transparenttextures.com/patterns/stardust.png');
-            opacity: 0.12; pointer-events: none; z-index: 1;
+            opacity: 0.2; pointer-events: none; z-index: 1;
+            animation: dustMove 60s linear infinite;
         }
+        @keyframes dustMove {
+            from { background-position: 0 0; }
+            to { background-position: 500px 1000px; }
+        }
+
         .container { width: 100%; max-width: 480px; margin: 0 auto; padding: 10px; z-index: 10; position: relative; min-height: 95vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         
-        .prize-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; width: 100%; margin: 20px 0; }
-        .grid-item { background: rgba(255,255,255,0.035); border: 1px solid rgba(212,175,55,0.18); border-radius: 18px; padding: 22px 5px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
-        .grid-item img { width: 85%; height: 68px; object-fit: contain; }
-        .grid-item span { font-size: 0.75rem; font-weight: 800; margin-top: 10px; color: #eee; text-align: center; }
+        .prize-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; margin: 20px 0; }
+        .grid-item { background: rgba(255,255,255,0.04); border: 1px solid rgba(212,175,55,0.2); border-radius: 15px; padding: 20px 5px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        .grid-item img { width: 85%; height: 60px; object-fit: contain; }
+        .grid-item span { font-size: 0.65rem; font-weight: 800; margin-top: 10px; color: #ddd; text-align: center; line-height: 1.2; }
 
-        /* ELANTRA CENTER */
-        .car-accent { grid-column: 2; grid-row: 2; background: rgba(212,175,55,0.12); border: 2px solid var(--gold); transform: scale(1.28); box-shadow: 0 0 35px var(--gold-glow); z-index: 5; }
-        .car-accent img { height: 78px; filter: drop-shadow(0 0 10px var(--gold-glow)); }
-        .car-accent span { color: #fff; font-size: 0.85rem; font-weight: 900; }
+        .car-accent { grid-column: 2; grid-row: 2; background: rgba(212,175,55,0.1); border: 2px solid var(--gold); transform: scale(1.25); box-shadow: 0 0 30px var(--gold-glow); z-index: 5; }
+        .car-accent img { height: 70px; }
 
-        .btn-main { background: linear-gradient(45deg, #bf953f, #fcf6ba, #bf953f); color: #000; border: none; width: 100%; padding: 22px; border-radius: 50px; font-size: 1.3rem; font-weight: 900; text-transform: uppercase; cursor: pointer; box-shadow: 0 10px 30px rgba(212,175,55,0.4); margin-top: 25px; }
+        .btn-main { background: linear-gradient(45deg, #bf953f, #fcf6ba, #bf953f); color: #000; border: none; width: 100%; padding: 20px; border-radius: 50px; font-size: 1.2rem; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-top: 20px; box-shadow: 0 10px 30px rgba(212,175,55,0.3); }
 
-        /* MODAL & CHESTS */
         #chestView { display: none; width: 100%; text-align: center; }
-        .chests-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 25px; }
-        .modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.98); display:none; align-items:center; justify-content:center; z-index:2000; }
-        .modal-box { background: #0a0a0a; border: 2px solid var(--gold); border-radius: 35px; width: 85%; padding: 40px 20px; text-align: center; }
-        .moto { display: none; color: #fff; font-weight: 900; font-size: 1.2rem; margin-top: 20px; }
+        .chests-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 25px; padding: 10px; }
+
+        .modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.95); display:none; align-items:center; justify-content:center; z-index:2000; }
+        .modal-box { border: 2px solid var(--gold); border-radius: 30px; width: 85%; padding: 40px 20px; text-align: center; background: #000; box-shadow: 0 0 50px var(--gold-glow); }
     </style>
 </head>
 <body>
+    <div class="gold-dust"></div>
+
     <div class="container" id="mainScene">
-        <h2 style="color:var(--gold); font-weight:900; letter-spacing:4px; margin:0;">ELANTRA DRAW</h2>
+        <h2 style="color:var(--gold); font-weight:900; letter-spacing:4px;">BNS PREMIUM</h2>
         <div class="prize-grid">
             <div class="grid-item"><img src="iphone.png"><span>IPHONE</span></div>
             <div class="grid-item"><img src="dyson.png"><span>DYSON</span></div>
             <div class="grid-item"><img src="golden.png"><span>АЛТЫН</span></div>
-            
             <div class="grid-item"><img src="bag.png"><span>КОСМЕТИЧКА</span></div>
             <div class="grid-item car-accent"><img src="elantra.png"><span>ELANTRA</span></div>
-            <div class="grid-item"><img src="money.png"><span>100.000₸</span></div> 
-            
+            <div class="grid-item"><img src="money.png"><span>100.000₸</span></div>
             <div class="grid-item"><img src="parfum.png"><span>ПАРФЮМ</span></div>
             <div class="grid-item"><img src="nazzi.png"><span>АДВЕНТ</span></div>
             <div class="grid-item"><img src="satuar.png"><span>SATWÁR</span></div>
-            
             <div class="grid-item"><img src="cosmetic.png"><span>КОСМЕТИКА</span></div>
             <div class="grid-item"><img src="cushion.png"><span>КУШОН</span></div>
-            <div class="grid-item"><img src="gift.png"><span>БОНУС</span></div> </div>
-        <button class="btn-main" onclick="openChests()">СЫЙЛЫҒЫМДЫ АШУ</button>
+            <div class="grid-item" style="border-color: #25d366;"><img src="china.png"><span>ҚЫТАЙҒА БИЗНЕС ТУР</span></div>
+        </div>
+        <button class="btn-main" id="startBtn" onclick="openChests()">СЫЙЛЫҒЫМДЫ АШУ</button>
     </div>
 
     <div class="container" id="chestView">
-        <h1 style="color:var(--gold); font-weight:900; letter-spacing:2px;">12 АЛТЫН ҚОБДИША</h1>
-        <div class="chests-grid">
-            <script>for(let i=0; i<12; i++) document.write('<div onclick="revealBox(this)"><img src="chest.png" style="width:100%;"></div>');</script>
+        <h1 style="color:var(--gold); font-weight:900;">12 АЛТЫН ҚОБДИША</h1>
+        <div class="chests-grid" id="gridBoxes">
+            <script>for(let i=0; i<12; i++) document.write('<div class="box-item" onclick="revealBox(this)"><img src="chest.png" style="width:100%;"></div>');</script>
         </div>
     </div>
 
     <div class="modal" id="winModal">
         <div class="modal-box">
-            <h2 id="wTitle" style="color:var(--gold); font-weight:900; margin:0; letter-spacing:2px;">ҚҰТТЫҚТАЙМЫЗ!</h2>
+            <h2 style="color:var(--gold); font-weight:900;">ҚҰТТЫҚТАЙМЫЗ!</h2>
             <div id="wOut"></div>
-            <div id="wId" style="color:var(--gold); font-weight:900; font-size:1.3rem; margin:15px 0;"></div>
-            <div id="motoText" class="moto">🔄 КЕЛЕСІ ЖОЛЫ<br>БҰДАН ДА ҮЛКЕН<br>СЫЙЛЫҚ КҮТІП ТҰР! 🎁</div>
-            <button class="btn-main" id="okBtn" onclick="closeSequence()">ОК</button>
+            <div id="wId" style="color:var(--gold); font-weight:900; font-size:1.2rem; margin:15px 0; border: 1px dashed var(--gold); padding: 5px;"></div>
+            <button class="btn-main" onclick="backToMenu()">МӘЗІРГЕ ОРАЛУ</button>
         </div>
     </div>
 
@@ -85,25 +90,36 @@
         const tg = window.Telegram.WebApp; tg.expand();
         const urlParams = new URLSearchParams(window.location.search);
         const p = urlParams.get('prize') || "ПАРФЮМ";
-        const att = urlParams.get('attempt') || "0000";
-        document.getElementById('userIdDisp').innerText = urlParams.get('id') || "User";
+        const att = urlParams.get('attempt') || "ID-000";
+        let isPlayed = false;
 
-        function openChests() { document.getElementById('mainScene').style.display='none'; document.getElementById('chestView').style.display='flex'; }
+        function openChests() {
+            if(isPlayed) { alert("Сіз өз мүмкіндігіңізді қолдандыңыз!"); return; }
+            document.getElementById('mainScene').style.display='none'; 
+            document.getElementById('chestView').style.display='flex'; 
+        }
+
         function revealBox(el) {
-            el.style.opacity="0.4"; if(window.navigator.vibrate) window.navigator.vibrate(50);
+            if(isPlayed) return;
+            isPlayed = true;
+            el.style.opacity="0.4";
             setTimeout(() => {
-                const imgs = {"Алтын":"golden.png","Айфон":"iphone.png","Дайсон":"dyson.png","Парфюм":"parfum.png","КОСМЕТИЧКА":"bag.png","Косметика":"cosmetic.png","Көлік":"elantra.png","100.000₸":"money.png","Satwár":"satuar.png","Кушон":"cushion.png","Назимен адвент":"nazzi.png","БОНУС":"gift.png"};
-                document.getElementById('wOut').innerHTML = `<img src="${imgs[p] || 'parfum.png'}" style="width:200px; margin:20px 0;"><h1 style="text-transform:uppercase;">${p}</h1>`;
+                const imgs = {"Алтын":"golden.png","Айфон":"iphone.png","Дайсон":"dyson.png","Парфюм":"parfum.png","КОСМЕТИЧКА":"bag.png","Косметика":"cosmetic.png","Көлік":"elantra.png","100.000₸":"money.png","Satwár":"satuar.png","Кушон":"cushion.png","Назимен адвент":"nazzi.png","Қытайға Бизнес тур":"china.png"};
+                document.getElementById('wOut').innerHTML = `<img src="${imgs[p] || 'parfum.png'}" style="width:150px;"><br><h3>${p}</h3>`;
                 document.getElementById('wId').innerText = "GIFT ID: " + att;
                 document.getElementById('winModal').style.display='flex';
-                confetti({particleCount:200, spread:80, origin:{y:0.7}});
+                confetti({particleCount:150, spread:70, origin:{y:0.7}});
             }, 600);
         }
-        function closeSequence() {
-            document.getElementById('wTitle').style.display='none'; document.getElementById('wOut').style.display='none';
-            document.getElementById('wId').style.display='none'; document.getElementById('okBtn').style.display='none';
-            document.getElementById('motoText').style.display='block';
-            setTimeout(() => { tg.sendData("gift_collected"); tg.close(); }, 2500);
+
+        function backToMenu() {
+            document.getElementById('winModal').style.display='none';
+            document.getElementById('chestView').style.display='none';
+            document.getElementById('mainScene').style.display='flex';
+            document.getElementById('startBtn').innerText = "МҮМКІНДІК ҚОЛДАНЫЛДЫ";
+            document.getElementById('startBtn').style.opacity = "0.5";
+            // Мәліметті ботқа жіберу
+            tg.sendData("collected_" + p);
         }
     </script>
 </body>
