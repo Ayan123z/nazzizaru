@@ -1,203 +1,197 @@
-import logging
-import asyncio
-import sqlite3
-import random
-import pdfplumber
-import io
-import pandas as pd
-from datetime import datetime
-from aiogram import Bot, Dispatcher, F, types
-from aiogram.filters import CommandStart, Command
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, FSInputFile, WebAppInfo
-from aiogram.fsm.context import FSMContext
-from aiogram.fsm.state import State, StatesGroup
-from aiogram.fsm.storage.memory import MemoryStorage
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nazimen Қобдишасы</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <style>
+        :root { --gold: #d4af37; --gold-glow: rgba(212, 175, 55, 0.4); --navy: #000814; }
+        body { 
+            background: radial-gradient(circle at center, #001d3d 0%, #000814 100%); 
+            color: #fff; font-family: 'Montserrat', sans-serif; 
+            margin: 0; overflow: hidden; -webkit-tap-highlight-color: transparent;
+        }
+        
+        #particles-js { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            z-index: 1; pointer-events: none; opacity: 0.6;
+        }
 
-# --- БАПТАУЛАР ---
-API_TOKEN = '8736163427:AAFKvZcuAapl0gD-Wi75X4lQ-fW9JYJf4Xk'
-ADMIN_ID = 8028022602 
-KASPI_PAY_LINK = "https://pay.kaspi.kz/pay/miy4a3zd"
-GIFT_LINK = "https://ayan123z.github.io/nazzizaru/"
+        /* 🕒 УАҚЫТ ПЕН ДАТА */
+        #dateTime {
+            position: fixed; top: 15px; right: 15px; text-align: right;
+            font-size: 0.7rem; color: var(--gold); z-index: 100;
+            font-weight: 700; text-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
 
-# Сыйлықтар лимиті (Қалған саны)
-PRIZE_LIMITS = {
-    "1 000 000₸": 2,
-    "iPhone 17 Pro (XR)": 5,
-    "Dyson": 10,
-    "Қытайға бизнес тур": 3,
-    "Алтын": 20,
-    "Парфюм": 500,
-    "Косметичка": 1000,
-    "Кушон": 800,
-    "Сотуар": 100,
-    "Адвент": 50
-}
+        .container { 
+            width: 100%; max-width: 480px; margin: 0 auto; padding: 10px; 
+            z-index: 10; position: relative; min-height: 95vh; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+        }
+        
+        .header-title {
+            color: var(--gold); font-weight: 700; font-size: 1.1rem;
+            text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px;
+            text-align: center; text-shadow: 0 0 10px var(--gold-glow);
+        }
 
-logging.basicConfig(level=logging.INFO)
-bot = Bot(token=API_TOKEN)
-dp = Dispatcher(storage=MemoryStorage())
-user_spam_check = {}
+        /* 📦 VIP МӨЛДІР ҰЯШЫҚТАР */
+        .prize-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 95%; margin: 10px 0; }
+        
+        .grid-item { 
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(212, 175, 55, 0.15); 
+            border-radius: 15px; padding: 22px 5px; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            backdrop-filter: blur(5px); animation: floating 4s ease-in-out infinite;
+        }
+        .grid-item img { width: 85%; height: 65px; object-fit: contain; }
+        .grid-item span { 
+            font-size: 0.55rem; font-weight: 800; margin-top: 10px; 
+            color: #eee; text-align: center; text-transform: uppercase;
+        }
 
-class Reg(StatesGroup):
-    waiting_for_check = State()
-    waiting_for_data = State()
-    retry_check = State()
+        /* 🚗 ELANTRA CENTER */
+        .car-accent { 
+            grid-column: 2; grid-row: 2; border: 2px solid var(--gold); 
+            box-shadow: 0 0 25px var(--gold-glow); transform: scale(1.15); 
+            position: relative; background: rgba(212, 175, 55, 0.05);
+        }
+        .main-badge {
+            position: absolute; top: -14px; background: linear-gradient(to right, #bf953f, #fcf6ba, #bf953f);
+            color: #000; font-size: 0.5rem; font-weight: 900;
+            padding: 3px 10px; border-radius: 4px; border: 1px solid #000; z-index: 30;
+        }
 
-def init_db():
-    conn = sqlite3.connect('nazzizaru_main.db')
-    cursor = conn.cursor()
-    cursor.execute("CREATE TABLE IF NOT EXISTS used_checks (id INTEGER PRIMARY KEY AUTOINCREMENT, file_hash TEXT UNIQUE)")
-    cursor.execute("""CREATE TABLE IF NOT EXISTS participants (
-        id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, username TEXT, full_name TEXT, 
-        phone TEXT, address TEXT, post_index TEXT, tickets TEXT, won_prize TEXT, 
-        timestamp DATETIME)""")
-    conn.commit(); conn.close()
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(0.5deg); }
+        }
 
-def is_check_used(file_hash):
-    conn = sqlite3.connect('nazzizaru_main.db')
-    cursor = conn.cursor(); cursor.execute("SELECT id FROM used_checks WHERE file_hash = ?", (file_hash,))
-    res = cursor.fetchone(); conn.close(); return res is not None
+        .btn-main { 
+            background: linear-gradient(45deg, #bf953f, #fcf6ba, #bf953f); 
+            color: #000; border: none; width: 85%; padding: 20px; 
+            border-radius: 50px; font-size: 1rem; font-weight: 900; 
+            margin-top: 25px; cursor: pointer; text-transform: uppercase;
+            box-shadow: 0 10px 25px rgba(212,175,55,0.3);
+        }
 
-def get_random_prize():
-    # Тек лимиті бар сыйлықтарды таңдау
-    available_prizes = [p for p, count in PRIZE_LIMITS.items() if count > 0]
-    weights = [0.5 if p == "1 000 000₸" else 0.1 if p == "iPhone 17 Pro (XR)" else 30 for p in available_prizes]
-    prize = random.choices(available_prizes, weights=weights, k=1)[0]
-    PRIZE_LIMITS[prize] -= 1
-    return prize
+        #chestView { display: none; width: 100%; text-align: center; }
+        .chests-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 15px; }
+        .box-item img { animation: floating 3s ease-in-out infinite; width: 100%; cursor: pointer; }
 
-def get_tickets(amount):
-    conn = sqlite3.connect('nazzizaru_main.db')
-    cursor = conn.cursor(); cursor.execute("SELECT id FROM participants ORDER BY id DESC LIMIT 1")
-    row = cursor.fetchone(); last_id = row[0] if row else 0; conn.close()
-    
-    count = 200 if amount in [7500, 8500] else 1500
-    start_num = 3000001 + (last_id * 1500)
-    return f"{start_num} бастап {start_num + count - 1} дейін", f"{start_num}"
+        .modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,8,20,0.98); display:none; align-items:center; justify-content:center; z-index:2000; }
+        .modal-box { border: 2px solid var(--gold); border-radius: 30px; width: 85%; padding: 35px 20px; text-align: center; background: #000; box-shadow: 0 0 50px var(--gold-glow); }
+        
+        #wOut img { width: 180px; height: auto; margin-bottom: 20px; filter: drop-shadow(0 0 15px var(--gold)); animation: prizePop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes prizePop { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    <div id="dateTime"></div>
 
-async def parse_kaspi_pdf(file_bytes):
-    try:
-        with pdfplumber.open(io.BytesIO(file_bytes)) as pdf:
-            full_text = "".join([page.extract_text() or "" for page in pdf.pages])
-            is_valid = "NAZIMEN" in full_text
-            amount = 0
-            for val in ["30 000", "30000", "27 000", "27000", "8 500", "8500", "7 500", "7500"]:
-                if val in full_text:
-                    amount = int(val.replace(" ", ""))
-                    break
-            return is_valid, amount
-    except: return False, 0
+    <div class="container" id="mainScene">
+        <div class="header-title">Nazimen қобдишасы</div>
+        
+        <div class="prize-grid">
+            <div class="grid-item"><img src="iphone.png"><span>iPhone 17 Pro (XR)</span></div>
+            <div class="grid-item"><img src="dyson.png"><span>Dyson</span></div>
+            <div class="grid-item"><img src="golden.png"><span>Алтын</span></div>
+            
+            <div class="grid-item"><img src="bag.png"><span>Косметичка</span></div>
+            <div class="grid-item car-accent">
+                <div class="main-badge">БАСТЫ СЫЙЛЫҚ</div>
+                <img src="elantra.png"><span>Elantra</span>
+            </div>
+            <div class="grid-item"><img src="money.png"><span>1 000 000₸</span></div>
+            
+            <div class="grid-item"><img src="parfum.png"><span>Парфюм</span></div>
+            <div class="grid-item"><img src="nazzi.png"><span>Адвент</span></div>
+            <div class="grid-item"><img src="satuar.png"><span>Сотуар</span></div>
+            
+            <div class="grid-item"><img src="cosmetic.png"><span>Косметика</span></div>
+            <div class="grid-item"><img src="cushion.png"><span>Кушон</span></div>
+            <div class="grid-item" style="border-color: var(--gold);"><img src="china.png"><span>Қытайға бизнес тур</span></div>
+        </div>
+        
+        <button class="btn-main" onclick="openChests()">Сыйлығымды ашу</button>
+    </div>
 
-@dp.message(CommandStart())
-async def cmd_start(m: types.Message, state: FSMContext):
-    await state.clear()
-    kb = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="🌸 Парфюм 7 500 тг", url=KASPI_PAY_LINK)],
-        [InlineKeyboardButton(text="💄 Nazimen 27 000 тг", url=KASPI_PAY_LINK)],
-        [InlineKeyboardButton(text="📎 Нұсқаулық", callback_data="guide")]
-    ])
-    welcome = (
-        "Сәлеметсіз бе! 😍\n\n"
-        "🎁 Сыйлықты алу үшін:\n"
-        "Kaspi.kz қосымшасынан сатып алған тауарыңыздың чегін **PDF форматта** осы чатқа жіберіңіз.\n\n"
-        "✨ Төмендегі батырмалар арқылы төлеп, чекті жіберіңіз 👇\n\n"
-        "❗️Ескерту: Red-рассрочка бағалары: 8500тг және 30 000тг"
-    )
-    try:
-        await m.answer_document(FSInputFile("Nazzizaru.pdf"), caption=welcome, reply_markup=kb)
-    except:
-        await m.answer(welcome, reply_markup=kb)
-    await state.set_state(Reg.waiting_for_check)
+    <div class="container" id="chestView">
+        <h1 style="color:var(--gold); font-weight:900;">САНДЫҚТЫ ТАҢДАҢЫЗ</h1>
+        <div class="chests-grid">
+            <script>for(let i=0; i<12; i++) document.write('<div class="box-item" onclick="revealDrama(this)"><img src="chest.png"></div>');</script>
+        </div>
+    </div>
 
-@dp.message(Reg.waiting_for_check, F.document)
-@dp.message(Reg.retry_check, F.document)
-async def handle_pdf(m: types.Message, state: FSMContext):
-    # Анти-хакер (Rate Limit)
-    now = datetime.now().timestamp()
-    if m.from_user.id in user_spam_check and now - user_spam_check[m.from_user.id] < 3: return
-    user_spam_check[m.from_user.id] = now
+    <div class="modal" id="winModal">
+        <div class="modal-box">
+            <h2 style="color:var(--gold); font-weight:900;">ҚҰТТЫҚТАЙМЫЗ!</h2>
+            <div id="wOut"></div>
+            <div id="wId" style="color:var(--gold); font-size:0.8rem; margin:15px 0; border: 1px dashed var(--gold); padding: 8px;"></div>
+            <button class="btn-main" onclick="tg.close()">ЖАБУ</button>
+        </div>
+    </div>
 
-    file_hash = m.document.file_unique_id
-    if is_check_used(file_hash):
-        await m.answer("❌ **Бұл қайталанған чек!**"); return
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        // ✨ УАҚЫТТЫ ЖАҢАРТУ ФУНКЦИЯСЫ
+        function updateDateTime() {
+            const now = new Date();
+            const options = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            document.getElementById('dateTime').innerText = now.toLocaleString('kk-KZ', options);
+        }
+        setInterval(updateDateTime, 1000); updateDateTime();
 
-    file = await bot.get_file(m.document.file_id)
-    file_bytes = await bot.download_file(file.file_path)
-    is_valid, amount = await parse_kaspi_pdf(file_bytes.read())
+        // ✨ АЛТЫН ТІЗБЕКТЕРДІҢ ҚОЗҒАЛЫСЫ
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 60 },
+                "color": { "value": "#d4af37" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5, "random": true },
+                "size": { "value": 2.5, "random": true },
+                "line_linked": { "enable": true, "distance": 150, "color": "#d4af37", "opacity": 0.3, "width": 1 },
+                "move": { "enable": true, "speed": 1, "direction": "top", "random": true, "out_mode": "out" }
+            }
+        });
 
-    if not is_valid or amount not in [7500, 8500, 27000, 30000]:
-        curr = await state.get_state()
-        if curr == Reg.waiting_for_check:
-            kb = InlineKeyboardMarkup(inline_keyboard=[
-                [InlineKeyboardButton(text="💰 Төлем жасау", url=KASPI_PAY_LINK)],
-                [InlineKeyboardButton(text="🔄 Қайта жүктеу", callback_data="retry")]
-            ])
-            await m.answer("⚠️ Жүйе чекті танымады. Қайта жүктеп көріңіз.", reply_markup=kb)
-            await state.set_state(Reg.retry_check)
-        else:
-            await state.update_data(file=m.document.file_id, hash=file_hash)
-            await m.answer("⏳ **Күтілуде. Жүйе автоматты оқи алмады, админ тексерісіне жіберілді.**\n\n<b>МІНДЕТТІ ТҮРДЕ</b> мәліметтеріңізді қалдырыңыз 👇", parse_mode="HTML")
-            await m.answer("👤 1. Аты-жөніңіз\n📱 2. Телефон нөміріңіз\n📍 3. Толық мекенжайыңыз\n📮 4. Пошталық индекс:")
-            await state.set_state(Reg.waiting_for_data)
-        return
+        const tg = window.Telegram.WebApp; tg.expand();
+        const urlParams = new URLSearchParams(window.location.search);
+        const p = urlParams.get('prize') || "Парфюм";
+        const att = urlParams.get('attempt') || "ID-" + Math.floor(Math.random() * 99999);
+        
+        let isPlayed = localStorage.getItem('p_' + att);
 
-    await state.update_data(amount=amount, hash=file_hash, auto=True)
-    await m.answer(f"✅ Чек расталды! Сомасы: {amount} тг.\n👤 1. Аты-жөніңіз\n📱 2. Телефон нөміріңіз\n📍 3. Толық мекенжайыңыз\n📮 4. Пошталық индекс:")
-    await state.set_state(Reg.waiting_for_data)
+        const prizeImages = {
+            "Алтын": "golden.png", "iPhone 17 Pro (XR)": "iphone.png", "Dyson": "dyson.png", "Парфюм": "parfum.png",
+            "Косметичка": "bag.png", "Косметика": "cosmetic.png", "Elantra": "elantra.png",
+            "1 000 000₸": "money.png", "Кушон": "cushion.png", "Қытайға бизнес тур": "china.png",
+            "Сотуар": "satuar.png", "Адвент": "nazzi.png"
+        };
 
-@dp.message(Reg.waiting_for_data)
-async def process_data(m: types.Message, state: FSMContext):
-    data = await state.get_data(); u_id = m.from_user.id
-    if data.get('auto'):
-        tix_range, first_tix = get_tickets(data['amount']); prize = get_random_prize()
-        conn = sqlite3.connect('nazzizaru_main.db'); cursor = conn.cursor()
-        cursor.execute("INSERT INTO used_checks (file_hash) VALUES (?)", (data['hash'],))
-        cursor.execute("INSERT INTO participants (user_id,username,full_name,tickets,won_prize,timestamp) VALUES (?,?,?,?,?,?)", 
-                       (u_id, m.from_user.username, m.text, tix_range, prize, datetime.now()))
-        conn.commit(); conn.close()
+        function openChests() { 
+            if (isPlayed) { alert("Сіз бұл мүмкіндікті пайдаланып қойғансыз!"); return; }
+            document.getElementById('mainScene').style.display='none'; 
+            document.getElementById('chestView').style.display='flex'; 
+        }
 
-        if prize in ["1 000 000₸", "Қытайға бизнес тур"]:
-            await bot.send_message(ADMIN_ID, f"🔥 VIP ҰТЫС: @{m.from_user.username}\nСыйлық: {prize}\nДеректер: {m.text}")
+        function revealDrama(el) {
+            if(isPlayed) return;
+            isPlayed = true; localStorage.setItem('p_' + att, 'true');
 
-        text = (f"🎉 **ҚҰТТЫҚТАЙМЫЗ!** Төлеміңіз расталды.\n\n"
-                f"🎉 BNS-компаниясы сыйлайтын коттеджге қатысу билеттеріңіз: **{tix_range}**\n"
-                f"☘️ Сәттілік серігіңіз болсын 🤗\n\n"
-                f"Сыйлығыңызды алу үшін қобдишаны ашыңыз 👇")
-        kb = InlineKeyboardMarkup(inline_keyboard=[
-            [InlineKeyboardButton(text="🎰 Сыйлығымды алу", web_app=WebAppInfo(url=f"{GIFT_LINK}?prize={prize}&attempt={first_tix}"))],
-            [InlineKeyboardButton(text="➕ Қайта төлеп, сыйлық алу", callback_data="restart")]
-        ])
-        await m.answer(text, reply_markup=kb)
-        await m.answer("Біздің компанияны таңдағаныңызға рақмет! 😊")
-    else:
-        admin_kb = InlineKeyboardMarkup(inline_keyboard=[
-            [InlineKeyboardButton(text="✅ РАСТАУ (200)", callback_data=f"ok_{u_id}_{data['hash']}_7500")],
-            [InlineKeyboardButton(text="✅ РАСТАУ (1500)", callback_data=f"ok_{u_id}_{data['hash']}_27000")],
-            [InlineKeyboardButton(text="❌ ЖОҚ", callback_data=f"no_{u_id}")]
-        ])
-        await bot.send_document(ADMIN_ID, data['file'], caption=f"❓ КҮДІКТІ ЧЕК: @{m.from_user.username}\n{m.text}", reply_markup=admin_kb)
-        await m.answer("⏳ Деректер админге жіберілді. Тексерген соң билетіңіз келеді.")
-
-@dp.callback_query(F.data.startswith("ok_"))
-async def admin_ok(c: types.CallbackQuery):
-    _, u_id, f_hash, amt = c.data.split("_"); u_id = int(u_id)
-    tix, first = get_tickets(int(amt)); p = get_random_prize()
-    conn = sqlite3.connect('nazzizaru_main.db'); cursor = conn.cursor()
-    cursor.execute("INSERT OR IGNORE INTO used_checks (file_hash) VALUES (?)", (f_hash,))
-    cursor.execute("INSERT INTO participants (user_id,tickets,won_prize,timestamp) VALUES (?,?,?,?)", (u_id,tix,p,datetime.now()))
-    conn.commit(); conn.close()
-    await bot.send_message(u_id, f"✅ Админ растады! Билеттер: {tix}\n☘️ Сәттілік!")
-    await c.message.edit_caption(caption=c.message.caption + "\n✅ РАСТАЛДЫ"); await c.answer()
-
-@dp.callback_query(F.data == "retry")
-async def retry_cb(c: types.CallbackQuery): await c.message.answer("📎 PDF чекті қайта жіберіңіз:"); await c.answer()
-
-@dp.message(Command("export"), F.from_user.id == ADMIN_ID)
-async def export_cmd(m: types.Message):
-    conn = sqlite3.connect('nazzizaru_main.db'); df = pd.read_sql_query("SELECT * FROM participants", conn); conn.close()
-    df.to_excel("Base.xlsx", index=False); await m.answer_document(FSInputFile("Base.xlsx"))
-
-async def main():
-    init_db(); await bot.delete_webhook(drop_pending_updates=True); await dp.start_polling(bot)
-
-if __name__ == '__main__': asyncio.run(main())
+            setTimeout(() => {
+                const imgFile = prizeImages[p] || "chest.png";
+                document.getElementById('wOut').innerHTML = `<img src="${imgFile}"><h3 style="color:var(--gold); text-transform:uppercase;">${p}</h3>`;
+                document.getElementById('wId').innerText = "СЫЙЛЫҚ ID: " + att; 
+                document.getElementById('winModal').style.display='flex';
+                confetti({particleCount: 200, spread: 90, origin: { y: 0.7 }, colors: ['#d4af37', '#ffffff']});
+            }, 800); 
+        }
+    </script>
+</body>
+</html>
