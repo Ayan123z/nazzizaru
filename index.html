@@ -6,6 +6,7 @@
     <title>Nazimen BNS | Premium Experience</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <style>
         :root { --gold: #d4af37; --gold-glow: rgba(212, 175, 55, 0.4); }
         
@@ -15,81 +16,64 @@
             overflow: hidden; -webkit-tap-highlight-color: transparent;
         }
 
-        /* ЖЫЛЫ ЖӘНЕ ЖҰМСАҚ ҚОЗҒАЛАТЫН ФОН */
-        .premium-bg {
+        /* ДИНАМИКАЛЫҚ "NETWORK" ФОН */
+        #particles-js {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, #1a150a 0%, #000000 100%);
-            z-index: -1;
-        }
-        
-        .bg-glow {
-            position: absolute; width: 150%; height: 150%;
-            background: radial-gradient(circle, rgba(212,175,55,0.05) 0%, transparent 70%);
-            top: -25%; left: -25%;
-            animation: bgMove 15s ease-in-out infinite alternate;
-        }
-
-        @keyframes bgMove {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(50px, 50px) scale(1.1); }
-        }
-
-        /* АЛТЫН ШАҢ ЭФФЕКТІСІ */
-        .gold-dust {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: url('https://www.transparenttextures.com/patterns/stardust.png');
-            opacity: 0.25; pointer-events: none; z-index: 1;
-            animation: dustMove 100s linear infinite;
-        }
-        @keyframes dustMove {
-            from { background-position: 0 0; }
-            to { background-position: 1000px 1000px; }
+            z-index: 1; pointer-events: none;
         }
 
         .container { width: 100%; max-width: 480px; margin: 0 auto; padding: 10px; z-index: 10; position: relative; min-height: 95vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         
         .prize-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; margin: 20px 0; }
+        
+        /* МӨЛДІР (TRANSPARENT) ҰЯШЫҚТАР */
         .grid-item { 
-            background: rgba(255,255,255,0.03); 
-            border: 1px solid rgba(212,175,55,0.15); 
+            background: rgba(255, 255, 255, 0.02); /* Өте мөлдір */
+            border: 1px solid rgba(212, 175, 55, 0.2); /* Нәзік алтын жиек */
             border-radius: 12px; padding: 15px 5px; 
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            backdrop-filter: blur(2px); /* Артқы фонды сәл бұлдырату */
         }
         .grid-item img { width: 75%; height: 50px; object-fit: contain; }
-        .grid-item span { font-size: 0.6rem; font-weight: 800; margin-top: 8px; color: #bbb; text-align: center; }
+        .grid-item span { font-size: 0.55rem; font-weight: 800; margin-top: 8px; color: #ddd; text-align: center; text-transform: uppercase; }
 
-        .car-accent { grid-column: 2; grid-row: 2; border: 2px solid var(--gold); box-shadow: 0 0 20px var(--gold-glow); transform: scale(1.1); background: rgba(212,175,55,0.05); }
+        /* ELANTRA CENTER */
+        .car-accent { 
+            grid-column: 2; grid-row: 2; 
+            border: 2px solid var(--gold); 
+            box-shadow: 0 0 20px var(--gold-glow); 
+            transform: scale(1.1); 
+            background: rgba(212, 175, 55, 0.05); 
+        }
 
-        .btn-main { background: linear-gradient(45deg, #bf953f, #fcf6ba, #bf953f); color: #000; border: none; width: 90%; padding: 20px; border-radius: 50px; font-size: 1.1rem; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-top: 20px; box-shadow: 0 10px 30px rgba(212,175,55,0.3); }
+        .btn-main { 
+            background: linear-gradient(45deg, #bf953f, #fcf6ba, #bf953f); 
+            color: #000; border: none; width: 90%; padding: 20px; 
+            border-radius: 50px; font-size: 1.1rem; font-weight: 900; 
+            text-transform: uppercase; cursor: pointer; margin-top: 20px; 
+            box-shadow: 0 10px 30px rgba(212,175,55,0.3); 
+        }
 
         #chestView { display: none; width: 100%; text-align: center; }
         .chests-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 15px; }
 
-        /* САНДЫҚТЫҢ ИНТРИГАЛЫҚ АНИМАЦИЯСЫ */
-        .box-item { transition: 0.3s; cursor: pointer; }
-        .box-item.opening {
-            animation: shake 0.5s ease-in-out infinite;
-            filter: drop-shadow(0 0 15px var(--gold));
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: rotate(0deg) scale(1); }
-            25% { transform: rotate(5deg) scale(1.1); }
-            75% { transform: rotate(-5deg) scale(1.1); }
+        /* САНДЫҚ АНИМАЦИЯСЫ */
+        .box-item.shake { animation: shake 0.5s ease-in-out infinite; filter: drop-shadow(0 0 15px var(--gold)); }
+        @keyframes shake { 
+            0%, 100% { transform: rotate(0); } 
+            25% { transform: rotate(5deg) scale(1.1); } 
+            75% { transform: rotate(-5deg) scale(1.1); } 
         }
 
         .modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.96); display:none; align-items:center; justify-content:center; z-index:2000; }
-        .modal-box { border: 2px solid var(--gold); border-radius: 30px; width: 85%; padding: 40px 20px; text-align: center; background: #000; box-shadow: 0 0 50px var(--gold-glow); animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        @keyframes pop { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal-box { border: 2px solid var(--gold); border-radius: 30px; width: 85%; padding: 40px 20px; text-align: center; background: #000; box-shadow: 0 0 50px var(--gold-glow); }
     </style>
 </head>
 <body>
-    <div class="premium-bg"><div class="bg-glow"></div></div>
-    <div class="gold-dust"></div>
+    <div id="particles-js"></div>
 
     <div class="container" id="mainScene">
-        <h2 style="color:var(--gold); font-weight:900; letter-spacing:4px; text-shadow: 0 0 10px rgba(212,175,55,0.3);">NAZIMEN BNS</h2>
+        <h2 style="color:var(--gold); font-weight:900; letter-spacing:4px; text-shadow: 0 0 10px rgba(212,175,55,0.5);">NAZIMEN BNS</h2>
         <div class="prize-grid">
             <div class="grid-item"><img src="iphone.png"><span>IPHONE</span></div>
             <div class="grid-item"><img src="dyson.png"><span>DYSON</span></div>
@@ -108,7 +92,7 @@
     </div>
 
     <div class="container" id="chestView">
-        <h1 style="color:var(--gold); font-weight:900;">ТАҢДАУ ЖАСАҢЫЗ</h1>
+        <h1 style="color:var(--gold); font-weight:900;">САНДЫҚТЫ ТАҢДАҢЫЗ</h1>
         <div class="chests-grid">
             <script>for(let i=0; i<12; i++) document.write('<div class="box-item" onclick="revealWithDrama(this)"><img src="chest.png" style="width:100%;"></div>');</script>
         </div>
@@ -119,7 +103,7 @@
             <h2 style="color:var(--gold); font-weight:900;">ҚҰТТЫҚТАЙМЫЗ!</h2>
             <div id="wOut"></div>
             <div id="wId" style="color:var(--gold); font-weight:900; font-size:1.1rem; margin:15px 0; border: 1px dashed var(--gold); padding: 5px;"></div>
-            <button class="btn-main" onclick="backToMenu()">ОК</button>
+            <button class="btn-main" onclick="location.reload()">МӘЗІРГЕ ОРАЛУ</button>
         </div>
     </div>
 
@@ -131,32 +115,34 @@
         const att = urlParams.get('attempt') || "ID-000";
         let isPlayed = false;
 
-        function openChests() {
-            if(isPlayed) { alert("Мүмкіндік қолданылды!"); return; }
-            document.getElementById('mainScene').style.display='none'; 
-            document.getElementById('chestView').style.display='flex'; 
-        }
+        // Particles.js Баптаулары (Алтын сызықтар)
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#d4af37" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5 },
+                "size": { "value": 3 },
+                "line_linked": { "enable": true, "distance": 150, "color": "#d4af37", "opacity": 0.4, "width": 1 },
+                "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
+            },
+            "interactivity": { "detect_on": "canvas", "events": { "onhover": { "enable": false } } },
+            "retina_detect": true
+        });
+
+        function openChests() { document.getElementById('mainScene').style.display='none'; document.getElementById('chestView').style.display='flex'; }
 
         function revealWithDrama(el) {
             if(isPlayed) return;
-            el.classList.add('opening'); // Интрига басталды (діріл)
-            if(window.navigator.vibrate) window.navigator.vibrate([100, 50, 100]);
-
+            el.classList.add('shake');
             setTimeout(() => {
                 isPlayed = true;
                 const imgs = {"Алтын":"golden.png","Айфон":"iphone.png","Дайсон":"dyson.png","Парфюм":"parfum.png","КОСМЕТИЧКА":"bag.png","Косметика":"cosmetic.png","Көлік":"elantra.png","100.000₸":"money.png","Satwár":"satuar.png","Кушон":"cushion.png","Назимен адвент":"nazzi.png","Қытайға Бизнес тур":"china.png"};
-                document.getElementById('wOut').innerHTML = `<img src="${imgs[p] || 'parfum.png'}" style="width:160px;"><br><h3>${p}</h3>`;
+                document.getElementById('wOut').innerHTML = `<img src="${imgs[p] || 'parfum.png'}" style="width:150px;"><br><h3>${p}</h3>`;
                 document.getElementById('wId').innerText = "GIFT ID: " + att;
                 document.getElementById('winModal').style.display='flex';
-                confetti({particleCount:200, spread:80, origin:{y:0.7}, colors:['#d4af37', '#ffffff']});
-            }, 1500); // 1.5 секундтық интрига
-        }
-
-        function backToMenu() {
-            document.getElementById('winModal').style.display='none';
-            document.getElementById('chestView').style.display='none';
-            document.getElementById('mainScene').style.display='flex';
-            tg.sendData("collected_" + p);
+                confetti({particleCount:150, spread:70, origin:{y:0.7}, colors:['#d4af37','#ffffff']});
+            }, 1500);
         }
     </script>
 </body>
