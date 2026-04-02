@@ -8,15 +8,16 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <style>
-        :root { --gold: #d4af37; --gold-glow: rgba(212, 175, 55, 0.4); }
+        :root { --gold: #d4af37; --gold-glow: rgba(212, 175, 55, 0.4); --navy: #000814; }
         body { 
-            background: #000; color: #fff; font-family: 'Montserrat', sans-serif; 
+            background: var(--navy); color: #fff; font-family: 'Montserrat', sans-serif; 
             margin: 0; overflow: hidden; -webkit-tap-highlight-color: transparent;
         }
         
+        /* ✨ АЛТЫН ЖҰЛДЫЗШАЛАР ТІЗБЕГІ */
         #particles-js { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            z-index: 1; pointer-events: none; opacity: 0.5;
+            z-index: 1; pointer-events: none; opacity: 0.6;
         }
 
         .container { 
@@ -28,61 +29,64 @@
         .header-title {
             color: var(--gold);
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 20px;
-            text-align: center;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            text-shadow: 0 0 10px var(--gold-glow);
         }
 
-        /* 📦 ҰЯШЫҚТАР (GRID) */
+        /* 📦 МӨЛДІР ПРЕМИУМ ҰЯШЫҚТАР */
         .prize-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 95%; margin: 15px 0; }
         
         .grid-item { 
-            background: rgba(255, 255, 255, 0.05); /* Мөлдір ұяшықтар */
-            border: 1px solid rgba(212, 175, 55, 0.2); 
-            border-radius: 15px; padding: 20px 5px; 
+            background: rgba(255, 255, 255, 0.03); /* Празрачный */
+            border: 1px solid rgba(212, 175, 55, 0.15); 
+            border-radius: 15px; padding: 22px 5px; 
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            backdrop-filter: blur(5px);
-            animation: floating 3s ease-in-out infinite;
+            backdrop-filter: blur(4px);
+            animation: floating 3.5s ease-in-out infinite;
         }
-        .grid-item img { width: 85%; height: 60px; object-fit: contain; }
+        .grid-item img { width: 85%; height: 65px; object-fit: contain; }
         .grid-item span { 
-            font-size: 0.6rem; font-weight: 800; margin-top: 10px; 
-            color: #ccc; text-align: center; text-transform: uppercase;
+            font-size: 0.55rem; font-weight: 800; margin-top: 10px; 
+            color: #eee; text-align: center; text-transform: uppercase;
         }
 
         /* 🚗 ELANTRA ACCENT */
         .car-accent { 
             grid-column: 2; grid-row: 2; border: 2px solid var(--gold); 
             box-shadow: 0 0 25px var(--gold-glow); transform: scale(1.1); 
-            position: relative;
+            position: relative; background: rgba(212, 175, 55, 0.05);
         }
         .main-badge {
-            position: absolute; top: -12px; background: var(--gold);
+            position: absolute; top: -14px; background: linear-gradient(to right, #bf953f, #fcf6ba, #bf953f);
             color: #000; font-size: 0.5rem; font-weight: 900;
-            padding: 2px 8px; border-radius: 4px; white-space: nowrap;
+            padding: 3px 10px; border-radius: 4px; border: 1px solid #000;
         }
 
-        /* АНИМАЦИЯ */
+        /* БАЯУ ҚОЗҒАЛЫС АНИМАЦИЯСЫ */
         @keyframes floating {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(1deg); }
         }
 
         .btn-main { 
             background: linear-gradient(45deg, #bf953f, #fcf6ba, #bf953f); 
-            color: #000; border: none; width: 85%; padding: 20px; 
+            color: #000; border: none; width: 85%; padding: 22px; 
             border-radius: 50px; font-size: 1rem; font-weight: 900; 
-            margin-top: 25px; cursor: pointer; text-transform: uppercase;
+            margin-top: 30px; cursor: pointer; text-transform: uppercase;
+            box-shadow: 0 10px 25px rgba(212,175,55,0.3);
         }
 
         #chestView { display: none; width: 100%; text-align: center; }
         .chests-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 15px; }
-        .box-item img { animation: floating 4s ease-in-out infinite; }
+        .box-item img { animation: floating 4s ease-in-out infinite; width: 100%; }
 
-        .modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.98); display:none; align-items:center; justify-content:center; z-index:2000; }
-        .modal-box { border: 2px solid var(--gold); border-radius: 30px; width: 85%; padding: 30px 20px; text-align: center; background: #000; }
+        .modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,8,20,0.98); display:none; align-items:center; justify-content:center; z-index:2000; }
+        .modal-box { border: 2px solid var(--gold); border-radius: 30px; width: 85%; padding: 35px 20px; text-align: center; background: #000; box-shadow: 0 0 50px var(--gold-glow); }
+        
+        #wOut img { width: 180px; height: auto; margin-bottom: 20px; filter: drop-shadow(0 0 15px var(--gold)); }
     </style>
 </head>
 <body>
@@ -109,7 +113,7 @@
             
             <div class="grid-item"><img src="cosmetic.png"><span>Косметика</span></div>
             <div class="grid-item"><img src="cushion.png"><span>Кушон</span></div>
-            <div class="grid-item"><img src="china.png"><span>Қытайға бизнес тур</span></div>
+            <div class="grid-item" style="border-color: var(--gold);"><img src="china.png"><span>Қытайға бизнес тур</span></div>
         </div>
         
         <button class="btn-main" onclick="openChests()">Сыйлығымды ашу</button>
@@ -118,42 +122,52 @@
     <div class="container" id="chestView">
         <h1 style="color:var(--gold); font-weight:900;">САНДЫҚТЫ ТАҢДАҢЫЗ</h1>
         <div class="chests-grid">
-            <script>for(let i=0; i<12; i++) document.write('<div class="box-item" onclick="revealDrama(this)"><img src="chest.png" style="width:100%;"></div>');</script>
+            <script>for(let i=0; i<12; i++) document.write('<div class="box-item" onclick="revealDrama(this)"><img src="chest.png"></div>');</script>
         </div>
     </div>
 
     <div class="modal" id="winModal">
         <div class="modal-box">
-            <h2 style="color:var(--gold); font-weight:900; margin-bottom: 20px;">ҚҰТТЫҚТАЙМЫЗ!</h2>
+            <h2 style="color:var(--gold); font-weight:900;">ҚҰТТЫҚТАЙМЫЗ!</h2>
             <div id="wOut"></div>
-            <div id="wId" style="color:var(--gold); font-size:0.8rem; margin:15px 0; border: 1px dashed var(--gold); padding: 5px; opacity: 0.7;"></div>
+            <div id="wId" style="color:var(--gold); font-size:0.8rem; margin:15px 0; border: 1px dashed var(--gold); padding: 8px;"></div>
             <button class="btn-main" onclick="tg.close()">ЖАБУ</button>
         </div>
     </div>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
+        // ✨ АЛТЫН ШАҢДАРДЫҢ ЖОҒАРЫ ҚАРАЙ ҚОЗҒАЛЫСЫ
         particlesJS("particles-js", {
             "particles": {
-                "number": { "value": 80 },
+                "number": { "value": 100 },
                 "color": { "value": "#d4af37" },
                 "shape": { "type": "circle" },
-                "opacity": { "value": 0.4 },
-                "size": { "value": 2 },
+                "opacity": { "value": 0.5, "random": true },
+                "size": { "value": 2, "random": true },
                 "line_linked": { "enable": false },
-                "move": { "enable": true, "speed": 0.5, "direction": "top", "random": true }
+                "move": { "enable": true, "speed": 0.8, "direction": "top", "random": true, "out_mode": "out" }
             }
         });
 
         const tg = window.Telegram.WebApp; tg.expand();
         const urlParams = new URLSearchParams(window.location.search);
         const p = urlParams.get('prize') || "Парфюм";
-        const att = urlParams.get('attempt') || "ID-" + Math.floor(Math.random() * 9999);
-        let isPlayed = localStorage.getItem('isPlayed_' + att); // ТЕК 1 РЕТ АШУ ЛОГИКАСЫ
+        const att = urlParams.get('attempt') || "ID-" + Math.floor(Math.random() * 99999);
+        
+        // 🔐 ТЕК 1 РЕТ АШУ ТЕКСЕРІСІ
+        let isPlayed = localStorage.getItem('played_' + att);
+
+        const prizeImages = {
+            "Алтын": "golden.png", "iPhone 17 Pro (XR)": "iphone.png", "Dyson": "dyson.png", "Парфюм": "parfum.png",
+            "Косметичка": "bag.png", "Косметика": "cosmetic.png", "Elantra": "elantra.png",
+            "1 000 000₸": "money.png", "Кушон": "cushion.png", "Қытайға бизнес тур": "china.png",
+            "Сотуар": "satuar.png", "Адвент": "nazzi.png"
+        };
 
         function openChests() { 
             if (isPlayed) {
-                alert("Сіз бұл сыйлықты ашып қойғансыз!");
+                alert("Сіз бұл мүмкіндікті пайдаланып қойғансыз!");
                 return;
             }
             document.getElementById('mainScene').style.display='none'; 
@@ -163,15 +177,18 @@
         function revealDrama(el) {
             if(isPlayed) return;
             isPlayed = true;
-            localStorage.setItem('isPlayed_' + att, 'true'); // ID бойынша сақтау
+            localStorage.setItem('played_' + att, 'true');
 
             setTimeout(() => {
-                const imgFile = "chest.png"; // Бұл жерде боттан келген сурет логикасы сақталған
-                document.getElementById('wOut').innerHTML = `<h3 style="color:var(--gold);">${p}</h3>`;
+                const imgFile = prizeImages[p] || "chest.png";
+                document.getElementById('wOut').innerHTML = `
+                    <img src="${imgFile}">
+                    <h3 style="color:var(--gold); text-transform:uppercase;">${p}</h3>
+                `;
                 document.getElementById('wId').innerText = "СЫЙЛЫҚ ID: " + att; 
                 document.getElementById('winModal').style.display='flex';
-                confetti({particleCount: 150, spread: 70, origin: { y: 0.7 }});
-            }, 700); 
+                confetti({particleCount: 180, spread: 80, origin: { y: 0.7 }});
+            }, 800); 
         }
     </script>
 </body>
