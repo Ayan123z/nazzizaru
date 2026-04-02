@@ -3,128 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nazimen BNS | Premium Experience</title>
+    <title>Nazimen BNS | Ultra Premium</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <style>
-        :root { --gold: #d4af37; --gold-glow: rgba(212, 175, 55, 0.5); --bg: #05070a; }
-        body { background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
+        :root { --gold: #d4af37; --gold-glow: rgba(212, 175, 55, 0.7); }
+        body { 
+            background: #000; color: #fff; font-family: 'Montserrat', sans-serif; 
+            margin: 0; overflow: hidden; display: flex; flex-direction: column; align-items: center;
+        }
         #particles-js { position: fixed; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
         
-        .header { width: 100%; padding: 20px; display: flex; justify-content: space-between; z-index: 10; position: relative; box-sizing: border-box; }
-        .id-badge { background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold); padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; }
-        .live-dot { color: #25d366; font-weight: 900; font-size: 0.8rem; display: flex; align-items: center; gap: 5px; }
-        .live-dot::before { content: ''; width: 8px; height: 8px; background: #25d366; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        .header { width: 100%; padding: 20px; display: flex; justify-content: space-between; z-index: 10; box-sizing: border-box; }
+        .id-badge { border: 1.5px solid var(--gold); padding: 6px 18px; border-radius: 25px; font-weight: 900; color: var(--gold); background: rgba(212,175,55,0.1); }
 
-        .container { width: 100%; max-width: 500px; margin: 0 auto; padding: 20px; z-index: 10; position: relative; display: flex; flex-direction: column; align-items: center; min-height: 90vh; justify-content: center; }
+        .container { width: 100%; max-width: 500px; padding: 10px; z-index: 10; height: 90vh; display: flex; flex-direction: column; align-items: center; justify-content: space-around; }
 
-        /* GALAXY LAYOUT */
-        .galaxy-wrapper { position: relative; width: 100%; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; margin-bottom: 40px; }
-        
-        .main-car-spot { position: absolute; width: 75%; z-index: 5; filter: drop-shadow(0 0 35px var(--gold-glow)); transition: 0.5s; animation: float 4s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-15px) scale(1.03); } }
-        .main-car-spot img { width: 100%; }
+        /* ГАЛАКТИКАЛЫҚ КОМПОЗИЦИЯ */
+        .galaxy {
+            position: relative; width: 100%; aspect-ratio: 1 / 1;
+            display: flex; align-items: center; justify-content: center;
+        }
 
-        /* ORBIT SLOTS */
-        .orbit-item { position: absolute; width: 68px; height: 68px; background: rgba(255,255,255,0.05); border: 1px solid rgba(212,175,55,0.4); border-radius: 50%; padding: 10px; backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-        .orbit-item img { width: 90%; height: 90%; object-fit: contain; }
+        /* ОРТАДАҒЫ КӨЛІК (МАКСИМАЛДЫ АКЦЕНТ) */
+        .main-car {
+            position: absolute; width: 85%; z-index: 5;
+            filter: drop-shadow(0 0 40px var(--gold-glow));
+            animation: carFloat 3s ease-in-out infinite;
+        }
+        @keyframes carFloat { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-15px) scale(1.05); } }
+        .main-car img { width: 100%; pointer-events: none; }
 
-        /* Шеңбер бойымен орналасу */
-        .s1 { transform: translate(0, -155px); }
-        .s2 { transform: translate(95px, -120px); }
-        .s3 { transform: translate(145px, -40px); }
-        .s4 { transform: translate(135px, 70px); }
-        .s5 { transform: translate(70px, 145px); }
-        .s6 { transform: translate(-70px, 145px); }
-        .s7 { transform: translate(-135px, 70px); }
-        .s8 { transform: translate(-145px, -40px); }
-        .s9 { transform: translate(-95px, -120px); }
-        .s10 { transform: translate(0, 165px); }
+        /* ҮЛКЕЙТІЛГЕН СЫЙЛЫҚ ҰЯШЫҚТАРЫ */
+        .prize-item {
+            position: absolute; width: 75px; height: 75px; 
+            background: rgba(255,255,255,0.07); border: 2px solid var(--gold);
+            border-radius: 50%; padding: 12px; backdrop-filter: blur(10px);
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+        .prize-item img { width: 100%; height: 100%; object-fit: contain; }
 
-        .cta-btn { background: linear-gradient(45deg, #8a6d11, #f1d56e, #8a6d11); color: #000; border: none; width: 90%; padding: 22px; border-radius: 18px; font-size: 1.2rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; box-shadow: 0 10px 30px rgba(212,175,55,0.4); z-index: 20; }
+        /* 11 Сыйлықтың шеңбер бойымен орналасуы */
+        .s1 { transform: translate(0, -165px); }
+        .s2 { transform: translate(110px, -130px); }
+        .s3 { transform: translate(160px, -45px); }
+        .s4 { transform: translate(145px, 80px); }
+        .s5 { transform: translate(80px, 160px); }
+        .s6 { transform: translate(-80px, 160px); }
+        .s7 { transform: translate(-145px, 80px); }
+        .s8 { transform: translate(-160px, -45px); }
+        .s9 { transform: translate(-110px, -130px); }
+        .s10 { transform: translate(0, 180px); }
+        .s11 { transform: translate(0, 0); z-index: 1; opacity: 0; } /* Жасырын */
 
-        /* CHESTS VIEW */
-        #chestView { display: none; width: 100%; text-align: center; }
-        .chests-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 30px; }
+        .btn-main {
+            background: linear-gradient(45deg, #bf953f, #fcf6ba, #bf953f);
+            color: #000; border: none; width: 90%; padding: 22px;
+            border-radius: 50px; font-size: 1.4rem; font-weight: 900;
+            text-transform: uppercase; letter-spacing: 2px; cursor: pointer;
+            box-shadow: 0 10px 40px rgba(212,175,55,0.6);
+        }
+
+        /* 12 ҚОБДИША (4x3 ГРИД) */
+        .chests-view { display: none; width: 100%; text-align: center; }
+        .chests-grid { 
+            display: grid; grid-template-columns: repeat(3, 1fr); 
+            gap: 15px; padding: 20px; margin-top: 20px;
+        }
         .chest-card { cursor: pointer; transition: 0.3s; }
-        .chest-card img { width: 100%; filter: drop-shadow(0 15px 20px #000); }
+        .chest-card img { width: 100%; filter: drop-shadow(0 15px 25px #000); }
 
-        /* WIN MODAL */
+        /* МОДАЛЬ */
         .modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.98); display:none; align-items:center; justify-content:center; z-index:2000; }
-        .modal-box { background: #0a0c10; border: 2px solid var(--gold); border-radius: 35px; width: 85%; padding: 45px 20px; text-align: center; box-shadow: 0 0 60px var(--gold-glow); }
-        .win-icon { width: 220px; height: 220px; object-fit: contain; margin: 20px 0; filter: drop-shadow(0 0 20px var(--gold-glow)); }
-        .close-btn { background: var(--gold); border: none; padding: 20px; border-radius: 50px; width: 100%; font-weight: 900; color: #000; font-size: 1.1rem; margin-top: 25px; }
+        .modal-box { background: #0a0a0a; border: 3px solid var(--gold); border-radius: 40px; width: 85%; padding: 50px 20px; text-align: center; box-shadow: 0 0 70px var(--gold-glow); }
+        .win-img-final { width: 220px; height: 220px; object-fit: contain; margin-bottom: 25px; filter: drop-shadow(0 0 20px var(--gold-glow)); }
+        .moto { display: none; font-size: 1.3rem; font-weight: 900; color: #fff; line-height: 1.4; margin-top: 20px; }
     </style>
 </head>
 <body>
     <div id="particles-js"></div>
     <div class="header">
         <div class="id-badge">ID: <span id="userIdDisp">...</span></div>
-        <div class="live-dot">BNS LIVE</div>
+        <div style="color: #25d366; font-weight: 900; font-size: 0.9rem;">BNS LIVE 🟢</div>
     </div>
 
-    <div class="container" id="mainScene">
-        <div class="galaxy-wrapper">
-            <div class="main-car-spot">
-                <img src="elantra.png" alt="Hyundai Elantra">
-                <div style="text-align:center; font-weight:900; color:var(--gold); margin-top:10px; font-size:1.2rem; text-shadow:0 0 10px #000;">HYUNDAI ELANTRA</div>
-            </div>
-            <div class="orbit-item s1"><img src="iphone.png"></div>
-            <div class="orbit-item s2"><img src="dyson.png"></div>
-            <div class="orbit-item s3"><img src="golden.png"></div>
-            <div class="orbit-item s4"><img src="money.png"></div>
-            <div class="orbit-item s5"><img src="money.png"></div>
-            <div class="orbit-item s6"><img src="parfum.png"></div>
-            <div class="orbit-item s7"><img src="nazzi.png"></div>
-            <div class="orbit-item s8"><img src="satuar.png"></div>
-            <div class="orbit-item s9"><img src="cosmetic.png"></div>
-            <div class="orbit-item s10"><img src="cushion.png"></div>
+    <div class="container" id="view1">
+        <div style="text-align: center; z-index: 10;">
+            <h1 style="color: var(--gold); font-weight: 900; margin: 0; letter-spacing: 4px; font-size: 1.8rem;">ELANTRA</h1>
+            <p style="font-size: 0.7rem; letter-spacing: 6px; opacity: 0.6; margin-top: 5px;">BNS PREMIUM DRAW</p>
         </div>
-        <button class="cta-btn" onclick="switchToChests()">СЫЙЛЫҒЫМДЫ АШУ</button>
+
+        <div class="galaxy">
+            <div class="main-car">
+                <img src="elantra.png" alt="Hyundai Elantra">
+            </div>
+
+            <div class="prize-item s1"><img src="iphone.png"></div>
+            <div class="prize-item s2"><img src="dyson.png"></div>
+            <div class="prize-item s3"><img src="golden.png"></div>
+            <div class="prize-item s4"><img src="money.png"></div>
+            <div class="prize-item s5"><img src="money.png"></div>
+            <div class="prize-item s6"><img src="parfum.png"></div>
+            <div class="prize-item s7"><img src="nazzi.png"></div>
+            <div class="prize-item s8"><img src="satuar.png"></div>
+            <div class="prize-item s9"><img src="cosmetic.png"></div>
+            <div class="prize-item s10"><img src="cushion.png"></div>
+            <div class="prize-item s11" style="opacity: 1; transform: translate(110px, 130px);"><img src="bag.png"></div>
+        </div>
+
+        <button class="btn-main" onclick="showChests()">🔍 СЫЙЛЫҒЫМДЫ АШУ</button>
     </div>
 
-    <div class="container" id="chestView">
-        <h1 style="color:var(--gold); font-weight:900; letter-spacing:2px;">11 АЛТЫН ҚОБДИША</h1>
-        <p style="opacity:0.6;">Сыйлық жасырылған қобдишаны таңдаңыз</p>
+    <div class="container chests-view" id="view2">
+        <h1 style="color: var(--gold); font-weight: 900; letter-spacing: 2px;">12 АЛТЫН ҚОБДИША</h1>
         <div class="chests-grid">
             <script>
-                for(let i=0; i<11; i++) document.write('<div class="chest-card" onclick="revealPrize(this)"><img src="chest.png"></div>');
+                for(let i=0; i<12; i++) {
+                    document.write('<div class="chest-card" onclick="openBox(this)"><img src="chest.png"></div>');
+                }
             </script>
         </div>
     </div>
 
     <div class="modal" id="winModal">
         <div class="modal-box">
-            <h2 style="color:var(--gold); font-weight:900; margin:0; letter-spacing:2px;">ҚҰТТЫҚТАЙМЫЗ!</h2>
-            <div id="winOutput"></div>
-            <div id="giftIdTag" style="color:var(--gold); font-weight:900; font-size:1.3rem; margin:15px 0;"></div>
-            <p style="font-size:0.7rem; opacity:0.6;">Скриншот жасап, ботқа жіберіңіз</p>
-            <button class="close-btn" onclick="exitApp()">МӘЗІРГЕ ҚАЙТУ</button>
+            <h2 id="winTitle" style="color: var(--gold); font-weight: 900; margin-bottom: 10px;">ҚҰТТЫҚТАЙМЫЗ!</h2>
+            <div id="winContent"></div>
+            <div id="giftId" style="color: var(--gold); font-weight: 900; font-size: 1.4rem; margin: 20px 0;"></div>
+            <div id="motoText" class="moto">🔄 КЕЛЕСІ ЖОЛЫ<br>БҰДАН ДА ҮЛКЕН<br>СЫЙЛЫҚ КҮТІП ТҰР! 🎁</div>
+            <button class="btn-main" id="okBtn" onclick="finalClose()">ОК</button>
         </div>
     </div>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
         const tg = window.Telegram.WebApp; tg.expand();
-        particlesJS("particles-js", {"particles":{"number":{"value":60},"color":{"value":"#d4af37"},"size":{"value":1.5},"move":{"enable":true,"speed":1}}});
+        particlesJS("particles-js", {"particles":{"number":{"value":70},"color":{"value":"#d4af37"},"size":{"value":1.5},"move":{"enable":true,"speed":1.2}}});
 
         const urlParams = new URLSearchParams(window.location.search);
         const prize = urlParams.get('prize') || "ПАРФЮМ";
         const attempt = urlParams.get('attempt') || "0000";
         document.getElementById('userIdDisp').innerText = urlParams.get('id') || "User";
 
-        function switchToChests() {
-            document.getElementById('mainScene').style.display = 'none';
-            document.getElementById('chestView').style.display = 'flex';
+        function showChests() {
+            document.getElementById('view1').style.display = 'none';
+            document.getElementById('view2').style.display = 'flex';
         }
 
-        function revealPrize(el) {
-            el.style.transform = "scale(0.8)";
+        function openBox(el) {
             el.style.opacity = "0.4";
+            el.style.transform = "scale(0.8)";
             if(window.navigator.vibrate) window.navigator.vibrate(50);
-
+            
             setTimeout(() => {
                 const prizeMap = { 
                     "Алтын":"golden.png", "Айфон":"iphone.png", "Дайсон":"dyson.png", "Парфюм":"parfum.png", 
@@ -132,17 +164,24 @@
                     "100к тг":"money.png", "1.000.000 тг":"money.png", "Satwár":"satuar.png", 
                     "Кушон":"cushion.png", "Назимен адвент":"nazzi.png" 
                 };
-                document.getElementById('winOutput').innerHTML = `
-                    <img src="${prizeMap[prize] || 'parfum.png'}" class="win-icon">
-                    <h1 style="text-transform:uppercase; margin:0;">${prize}</h1>
+                document.getElementById('winContent').innerHTML = `
+                    <img src="${prizeMap[prize] || 'parfum.png'}" class="win-img-final">
+                    <h1 style="text-transform: uppercase; font-size: 2rem; margin: 0;">${prize}</h1>
                 `;
-                document.getElementById('giftIdTag').innerText = "GIFT ID: " + attempt;
+                document.getElementById('giftId').innerText = "GIFT ID: " + attempt;
                 document.getElementById('winModal').style.display = 'flex';
-                confetti({ particleCount: 200, spread: 80, origin: { y: 0.7 }, colors: ['#d4af37', '#ffffff'] });
+                confetti({ particleCount: 250, spread: 90, origin: { y: 0.7 }, colors: ['#d4af37', '#ffffff', '#bf953f'] });
             }, 600);
         }
 
-        function exitApp() { tg.sendData("gift_collected"); tg.close(); }
+        function finalClose() {
+            document.getElementById('winTitle').style.display = 'none';
+            document.getElementById('winContent').style.display = 'none';
+            document.getElementById('giftId').style.display = 'none';
+            document.getElementById('okBtn').style.display = 'none';
+            document.getElementById('motoText').style.display = 'block';
+            setTimeout(() => { tg.sendData("gift_collected"); tg.close(); }, 2800);
+        }
     </script>
 </body>
 </html>
