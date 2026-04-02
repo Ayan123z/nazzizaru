@@ -2,97 +2,147 @@
 <html lang="kk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nazimen-brand | Premium Draw</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nazimen BNS | Premium Experience</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <style>
-        :root { --gold: #d4af37; --gold-glow: rgba(212, 175, 55, 0.6); --bg: #01040a; }
-        body { background: linear-gradient(rgba(1, 4, 10, 0.95), rgba(5, 10, 20, 0.95)); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; min-height: 100vh; }
+        :root { --gold: #d4af37; --gold-glow: rgba(212, 175, 55, 0.5); --bg: #05070a; }
+        body { background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
         #particles-js { position: fixed; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-        .header { width: 100%; padding: 15px 25px; display: flex; justify-content: space-between; font-size: 0.8rem; z-index: 10; border-bottom: 1px solid rgba(212, 175, 55, 0.1); box-sizing: border-box; }
-        .id-val { color: var(--gold); font-weight: 900; }
-        .container { width: 100%; max-width: 480px; padding: 15px; box-sizing: border-box; z-index: 10; display: flex; flex-direction: column; align-items: center; }
-        .promo-text { color: var(--gold); font-weight: 900; font-size: 1rem; text-align: center; text-transform: uppercase; margin: 20px 0; line-height: 1.4; letter-spacing: 1px; }
-        .section-title { font-weight: 700; font-size: 0.75rem; color: #888; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 2px; }
-        .prize-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; margin-bottom: 30px; }
-        .prize-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 12px; padding: 10px 5px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 85px; }
-        .car-highlight { grid-column: 2; border: 2px solid var(--gold); background: rgba(212, 175, 55, 0.08); box-shadow: 0 0 15px var(--gold-glow); transform: scale(1.05); margin-bottom: 15px; }
-        .prize-img { width: 80%; height: 45px; object-fit: contain; margin-bottom: 5px; }
-        .prize-name { font-size: 0.55rem; font-weight: 800; text-transform: uppercase; text-align: center; line-height: 1.1; }
-        .find-btn { background: linear-gradient(45deg, #8a6d11, #f1d56e, #8a6d11); color: #000; border: none; width: 100%; padding: 18px; border-radius: 50px; font-size: 1.1rem; font-weight: 900; cursor: pointer; text-transform: uppercase; box-shadow: 0 5px 20px var(--gold); }
+        
+        .header { width: 100%; padding: 20px; display: flex; justify-content: space-between; z-index: 10; position: relative; box-sizing: border-box; }
+        .id-badge { background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold); padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; }
+        .live-dot { color: #25d366; font-weight: 900; font-size: 0.8rem; display: flex; align-items: center; gap: 5px; }
+        .live-dot::before { content: ''; width: 8px; height: 8px; background: #25d366; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+
+        .container { width: 100%; max-width: 500px; margin: 0 auto; padding: 20px; z-index: 10; position: relative; display: flex; flex-direction: column; align-items: center; min-height: 90vh; justify-content: center; }
+
+        /* GALAXY LAYOUT */
+        .galaxy-wrapper { position: relative; width: 100%; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; margin-bottom: 40px; }
+        
+        .main-car-spot { position: absolute; width: 75%; z-index: 5; filter: drop-shadow(0 0 35px var(--gold-glow)); transition: 0.5s; animation: float 4s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-15px) scale(1.03); } }
+        .main-car-spot img { width: 100%; }
+
+        /* ORBIT SLOTS */
+        .orbit-item { position: absolute; width: 68px; height: 68px; background: rgba(255,255,255,0.05); border: 1px solid rgba(212,175,55,0.4); border-radius: 50%; padding: 10px; backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .orbit-item img { width: 90%; height: 90%; object-fit: contain; }
+
+        /* Шеңбер бойымен орналасу */
+        .s1 { transform: translate(0, -155px); }
+        .s2 { transform: translate(95px, -120px); }
+        .s3 { transform: translate(145px, -40px); }
+        .s4 { transform: translate(135px, 70px); }
+        .s5 { transform: translate(70px, 145px); }
+        .s6 { transform: translate(-70px, 145px); }
+        .s7 { transform: translate(-135px, 70px); }
+        .s8 { transform: translate(-145px, -40px); }
+        .s9 { transform: translate(-95px, -120px); }
+        .s10 { transform: translate(0, 165px); }
+
+        .cta-btn { background: linear-gradient(45deg, #8a6d11, #f1d56e, #8a6d11); color: #000; border: none; width: 90%; padding: 22px; border-radius: 18px; font-size: 1.2rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; box-shadow: 0 10px 30px rgba(212,175,55,0.4); z-index: 20; }
+
+        /* CHESTS VIEW */
+        #chestView { display: none; width: 100%; text-align: center; }
+        .chests-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 30px; }
+        .chest-card { cursor: pointer; transition: 0.3s; }
+        .chest-card img { width: 100%; filter: drop-shadow(0 15px 20px #000); }
+
+        /* WIN MODAL */
         .modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.98); display:none; align-items:center; justify-content:center; z-index:2000; }
-        .modal-box { background: #050a14; border: 2px solid var(--gold); border-radius: 40px; width: 85%; padding: 40px 20px; text-align: center; }
-        .win-img { width: 180px; height: 180px; object-fit: contain; margin: 20px 0; }
-        .ok-btn { background: var(--gold); border: none; padding: 15px; border-radius: 50px; width: 100%; font-weight: 900; color: #000; margin-top: 20px; cursor: pointer; font-size: 1.1rem; }
-        #prizeIdDisp { color: var(--gold); font-weight: 900; margin-top: 10px; font-size: 1.2rem; letter-spacing: 2px; }
+        .modal-box { background: #0a0c10; border: 2px solid var(--gold); border-radius: 35px; width: 85%; padding: 45px 20px; text-align: center; box-shadow: 0 0 60px var(--gold-glow); }
+        .win-icon { width: 220px; height: 220px; object-fit: contain; margin: 20px 0; filter: drop-shadow(0 0 20px var(--gold-glow)); }
+        .close-btn { background: var(--gold); border: none; padding: 20px; border-radius: 50px; width: 100%; font-weight: 900; color: #000; font-size: 1.1rem; margin-top: 25px; }
     </style>
 </head>
 <body>
     <div id="particles-js"></div>
     <div class="header">
-        <div>USER ID: <span class="id-val" id="userIdDisp">...</span></div>
-        <div style="color: #25d366; font-weight: 900;">LIVE 🟢</div>
+        <div class="id-badge">ID: <span id="userIdDisp">...</span></div>
+        <div class="live-dot">BNS LIVE</div>
     </div>
-    <div class="container">
-        <div id="prizeShowcaseArea">
-            <div class="promo-text">НАЗИМЕН ҚОБДИШАСЫН АШУ ҮШІН ТӨЛЕМ ЖАСАП, ЧЕК ЖІБЕРІҢІЗ</div>
-            <div class="section-title">Сыйлықтар тізімі</div>
-            <div class="prize-grid">
-                <div></div>
-                <div class="prize-card car-highlight"><img src="elantra.png" class="prize-img"><div class="prize-name">ELANTRA</div></div>
-                <div></div>
-                <div class="prize-card"><img src="golden.png" class="prize-img"><div class="prize-name">АЛТЫН</div></div>
-                <div class="prize-card"><img src="iphone.png" class="prize-img"><div class="prize-name">IPHONE</div></div>
-                <div class="prize-card"><img src="dyson.png" class="prize-img"><div class="prize-name">DYSON</div></div>
-                <div class="prize-card"><img src="money.png" class="prize-img"><div class="prize-name">100.000 ТГ</div></div>
-                <div class="prize-card"><img src="parfum.png" class="prize-img"><div class="prize-name">ПАРФЮМ</div></div>
-                <div class="prize-card"><img src="china.png" class="prize-img"><div class="prize-name">БИЗНЕС ТУР</div></div>
-                <div class="prize-card"><img src="bag.png" class="prize-img"><div class="prize-name">КОСМЕТИЧКА</div></div>
-                <div class="prize-card"><img src="cosmetic.png" class="prize-img"><div class="prize-name">КОСМЕТИКА</div></div>
-                <div class="prize-card"><img src="cushion.png" class="prize-img"><div class="prize-name">КУШОН</div></div>
-                <div class="prize-card"><img src="satuar.png" class="prize-img"><div class="prize-name">SATWÁR</div></div>
-                <div class="prize-card"><img src="nazzi.png" class="prize-img"><div class="prize-name">НАЗИМЕН АДВЕНТ</div></div>
+
+    <div class="container" id="mainScene">
+        <div class="galaxy-wrapper">
+            <div class="main-car-spot">
+                <img src="elantra.png" alt="Hyundai Elantra">
+                <div style="text-align:center; font-weight:900; color:var(--gold); margin-top:10px; font-size:1.2rem; text-shadow:0 0 10px #000;">HYUNDAI ELANTRA</div>
             </div>
-            <button class="find-btn" onclick="showChests()">🔍 Сыйлығымды табу</button>
+            <div class="orbit-item s1"><img src="iphone.png"></div>
+            <div class="orbit-item s2"><img src="dyson.png"></div>
+            <div class="orbit-item s3"><img src="golden.png"></div>
+            <div class="orbit-item s4"><img src="money.png"></div>
+            <div class="orbit-item s5"><img src="money.png"></div>
+            <div class="orbit-item s6"><img src="parfum.png"></div>
+            <div class="orbit-item s7"><img src="nazzi.png"></div>
+            <div class="orbit-item s8"><img src="satuar.png"></div>
+            <div class="orbit-item s9"><img src="cosmetic.png"></div>
+            <div class="orbit-item s10"><img src="cushion.png"></div>
         </div>
-        <div id="chestsArea" style="display: none; width: 100%;">
-            <div class="section-title">Қобдишаны таңдаңыз</div>
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px;">
-                <script>for(let i=0; i<9; i++) document.write('<div onclick="openChest(this)"><img src="chest.png" style="width:100%; cursor:pointer;"></div>');</script>
-            </div>
+        <button class="cta-btn" onclick="switchToChests()">СЫЙЛЫҒЫМДЫ АШУ</button>
+    </div>
+
+    <div class="container" id="chestView">
+        <h1 style="color:var(--gold); font-weight:900; letter-spacing:2px;">11 АЛТЫН ҚОБДИША</h1>
+        <p style="opacity:0.6;">Сыйлық жасырылған қобдишаны таңдаңыз</p>
+        <div class="chests-grid">
+            <script>
+                for(let i=0; i<11; i++) document.write('<div class="chest-card" onclick="revealPrize(this)"><img src="chest.png"></div>');
+            </script>
         </div>
     </div>
+
     <div class="modal" id="winModal">
         <div class="modal-box">
-            <div id="resultArea"></div>
-            <div id="prizeIdDisp"></div>
-            <p style="font-size: 11px; opacity: 0.8; margin-top: 15px;">Скриншотты ботқа жіберіңіз ✅</p>
-            <button class="ok-btn" onclick="sendCloseStatus()">ОК</button>
+            <h2 style="color:var(--gold); font-weight:900; margin:0; letter-spacing:2px;">ҚҰТТЫҚТАЙМЫЗ!</h2>
+            <div id="winOutput"></div>
+            <div id="giftIdTag" style="color:var(--gold); font-weight:900; font-size:1.3rem; margin:15px 0;"></div>
+            <p style="font-size:0.7rem; opacity:0.6;">Скриншот жасап, ботқа жіберіңіз</p>
+            <button class="close-btn" onclick="exitApp()">МӘЗІРГЕ ҚАЙТУ</button>
         </div>
     </div>
+
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
         const tg = window.Telegram.WebApp; tg.expand();
-        particlesJS("particles-js", {"particles":{"number":{"value":40},"color":{"value":"#d4af37"},"size":{"value":2},"move":{"enable":true,"speed":0.5}}});
+        particlesJS("particles-js", {"particles":{"number":{"value":60},"color":{"value":"#d4af37"},"size":{"value":1.5},"move":{"enable":true,"speed":1}}});
+
         const urlParams = new URLSearchParams(window.location.search);
-        const userId = urlParams.get('id') || "user";
-        const prizeFromBot = urlParams.get('prize') || "ПАРФЮМ"; 
-        const attemptId = urlParams.get('attempt') || "0000";
-        const uniqueKey = `nazz_win_${userId}_${attemptId}`;
-        document.getElementById('userIdDisp').innerText = userId;
-        window.onload = () => { if (localStorage.getItem(uniqueKey)) showWin(localStorage.getItem(uniqueKey)); };
-        function showChests() { document.getElementById('prizeShowcaseArea').style.display = 'none'; document.getElementById('chestsArea').style.display = 'block'; }
-        function openChest(el) { localStorage.setItem(uniqueKey, prizeFromBot); setTimeout(() => { showWin(prizeFromBot); confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); }, 800); }
-        function showWin(prize) {
-            const prizeImages = { "Алтын":"golden.png", "Айфон":"iphone.png", "Дайсон":"dyson.png", "Парфюм":"parfum.png", "Косметичка":"bag.png", "Косметика":"cosmetic.png", "Көлік":"elantra.png", "100.000 тг":"money.png", "Қытайға бизнес тур":"china.png", "Satwár":"satuar.png", "Кушон":"cushion.png", "Назимен адвент":"nazzi.png" };
-            document.getElementById('prizeShowcaseArea').style.display = 'none'; document.getElementById('chestsArea').style.display = 'none';
-            document.getElementById('resultArea').innerHTML = `<h1 style="color:var(--gold); font-weight:900;">ҚҰТТЫҚТАЙМЫЗ!</h1><img src="${prizeImages[prize] || 'parfum.png'}" class="win-img"><div style="font-size:1.5rem; font-weight:900; color:#fff; text-transform:uppercase;">${prize}</div>`;
-            document.getElementById('prizeIdDisp').innerText = `GIFT ID: ${attemptId}`;
-            document.getElementById('winModal').style.display = 'flex';
+        const prize = urlParams.get('prize') || "ПАРФЮМ";
+        const attempt = urlParams.get('attempt') || "0000";
+        document.getElementById('userIdDisp').innerText = urlParams.get('id') || "User";
+
+        function switchToChests() {
+            document.getElementById('mainScene').style.display = 'none';
+            document.getElementById('chestView').style.display = 'flex';
         }
-        function sendCloseStatus() { tg.sendData("gift_collected"); tg.close(); }
+
+        function revealPrize(el) {
+            el.style.transform = "scale(0.8)";
+            el.style.opacity = "0.4";
+            if(window.navigator.vibrate) window.navigator.vibrate(50);
+
+            setTimeout(() => {
+                const prizeMap = { 
+                    "Алтын":"golden.png", "Айфон":"iphone.png", "Дайсон":"dyson.png", "Парфюм":"parfum.png", 
+                    "КОСМЕТИЧКА":"bag.png", "Косметика":"cosmetic.png", "Көлік":"elantra.png", 
+                    "100к тг":"money.png", "1.000.000 тг":"money.png", "Satwár":"satuar.png", 
+                    "Кушон":"cushion.png", "Назимен адвент":"nazzi.png" 
+                };
+                document.getElementById('winOutput').innerHTML = `
+                    <img src="${prizeMap[prize] || 'parfum.png'}" class="win-icon">
+                    <h1 style="text-transform:uppercase; margin:0;">${prize}</h1>
+                `;
+                document.getElementById('giftIdTag').innerText = "GIFT ID: " + attempt;
+                document.getElementById('winModal').style.display = 'flex';
+                confetti({ particleCount: 200, spread: 80, origin: { y: 0.7 }, colors: ['#d4af37', '#ffffff'] });
+            }, 600);
+        }
+
+        function exitApp() { tg.sendData("gift_collected"); tg.close(); }
     </script>
 </body>
 </html>
