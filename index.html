@@ -16,33 +16,16 @@
         .container { width: 100%; max-width: 480px; padding: 15px; box-sizing: border-box; z-index: 10; display: flex; flex-direction: column; align-items: center; }
         .promo-text { color: var(--gold); font-weight: 900; font-size: 1rem; text-align: center; text-transform: uppercase; margin: 20px 0; line-height: 1.4; letter-spacing: 1px; }
         .section-title { font-weight: 700; font-size: 0.75rem; color: #888; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 2px; }
-
-        /* 11 ұяшыққа арналған сетка */
         .prize-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; margin-bottom: 30px; }
-        .prize-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 12px; padding: 10px 5px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 85px; transition: 0.3s; }
-        
-        /* Көлік жоғарыда ортада ерекше акцентпен */
-        .car-highlight { grid-column: 2; border: 2px solid var(--gold); background: rgba(212, 175, 55, 0.08); box-shadow: 0 0 20px var(--gold-glow); transform: scale(1.08); margin-bottom: 15px; }
-        
+        .prize-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 12px; padding: 10px 5px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 85px; }
+        .car-highlight { grid-column: 2; border: 2px solid var(--gold); background: rgba(212, 175, 55, 0.08); box-shadow: 0 0 15px var(--gold-glow); transform: scale(1.05); margin-bottom: 15px; }
         .prize-img { width: 80%; height: 45px; object-fit: contain; margin-bottom: 5px; }
-        .prize-name { font-size: 0.58rem; font-weight: 800; text-transform: uppercase; text-align: center; line-height: 1.1; color: #fff; }
-
-        .find-btn { background: linear-gradient(45deg, #8a6d11, #f1d56e, #8a6d11); color: #000; border: none; width: 100%; padding: 18px; border-radius: 50px; font-size: 1.1rem; font-weight: 900; cursor: pointer; text-transform: uppercase; box-shadow: 0 5px 20px var(--gold); transition: 0.4s; }
-        
-        /* Қобдишалар */
-        .chests-area { display: none; width: 100%; }
-        .chests-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
-        .chest-card { cursor: pointer; transition: 0.3s; }
-        .chest-card:hover { transform: scale(1.1); }
-        .chest-img { width: 100%; filter: drop-shadow(0 5px 15px #000); }
-
-        /* Modal (Ұтыс терезесі) */
+        .prize-name { font-size: 0.55rem; font-weight: 800; text-transform: uppercase; text-align: center; line-height: 1.1; }
+        .find-btn { background: linear-gradient(45deg, #8a6d11, #f1d56e, #8a6d11); color: #000; border: none; width: 100%; padding: 18px; border-radius: 50px; font-size: 1.1rem; font-weight: 900; cursor: pointer; text-transform: uppercase; box-shadow: 0 5px 20px var(--gold); }
         .modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.98); display:none; align-items:center; justify-content:center; z-index:2000; }
-        .modal-box { background: #050a14; border: 2px solid var(--gold); border-radius: 40px; width: 85%; padding: 40px 20px; text-align: center; box-shadow: 0 0 30px rgba(212, 175, 55, 0.6); }
+        .modal-box { background: #050a14; border: 2px solid var(--gold); border-radius: 40px; width: 85%; padding: 40px 20px; text-align: center; }
         .win-img { width: 180px; height: 180px; object-fit: contain; margin: 20px 0; }
-        .ok-btn { background: var(--gold); border: none; padding: 15px; border-radius: 50px; width: 100%; font-weight: 900; color: #000; margin-top: 20px; cursor: pointer; font-size: 1.1rem;}
-        
-        /* ID көрсету стильі */
+        .ok-btn { background: var(--gold); border: none; padding: 15px; border-radius: 50px; width: 100%; font-weight: 900; color: #000; margin-top: 20px; cursor: pointer; font-size: 1.1rem; }
         #prizeIdDisp { color: var(--gold); font-weight: 900; margin-top: 10px; font-size: 1.2rem; letter-spacing: 2px; }
     </style>
 </head>
@@ -50,7 +33,7 @@
     <div id="particles-js"></div>
     <div class="header">
         <div>USER ID: <span class="id-val" id="userIdDisp">...</span></div>
-        <div style="color: #25d366; font-weight: 900; letter-spacing: 1.5px;">LIVE 🟢</div>
+        <div style="color: #25d366; font-weight: 900;">LIVE 🟢</div>
     </div>
     <div class="container">
         <div id="prizeShowcaseArea">
@@ -60,86 +43,56 @@
                 <div></div>
                 <div class="prize-card car-highlight"><img src="elantra.png" class="prize-img"><div class="prize-name">ELANTRA</div></div>
                 <div></div>
-                
                 <div class="prize-card"><img src="golden.png" class="prize-img"><div class="prize-name">АЛТЫН</div></div>
                 <div class="prize-card"><img src="iphone.png" class="prize-img"><div class="prize-name">IPHONE</div></div>
                 <div class="prize-card"><img src="dyson.png" class="prize-img"><div class="prize-name">DYSON</div></div>
-                
                 <div class="prize-card"><img src="money.png" class="prize-img"><div class="prize-name">100.000 ТГ</div></div>
                 <div class="prize-card"><img src="parfum.png" class="prize-img"><div class="prize-name">ПАРФЮМ</div></div>
                 <div class="prize-card"><img src="china.png" class="prize-img"><div class="prize-name">БИЗНЕС ТУР</div></div>
-                
                 <div class="prize-card"><img src="bag.png" class="prize-img"><div class="prize-name">КОСМЕТИЧКА</div></div>
                 <div class="prize-card"><img src="cosmetic.png" class="prize-img"><div class="prize-name">КОСМЕТИКА</div></div>
                 <div class="prize-card"><img src="cushion.png" class="prize-img"><div class="prize-name">КУШОН</div></div>
-                
-                <div class="prize-card"><img src="nazzi.png" class="prize-img"><div class="prize-name">НАЗИМЕН АДВЕНТ</div></div>
                 <div class="prize-card"><img src="satuar.png" class="prize-img"><div class="prize-name">SATWÁR</div></div>
+                <div class="prize-card"><img src="nazzi.png" class="prize-img"><div class="prize-name">НАЗИМЕН АДВЕНТ</div></div>
             </div>
             <button class="find-btn" onclick="showChests()">🔍 Сыйлығымды табу</button>
         </div>
-
-        <div id="chestsArea" class="chests-area">
+        <div id="chestsArea" style="display: none; width: 100%;">
             <div class="section-title">Қобдишаны таңдаңыз</div>
-            <div class="chests-grid">
-                <script>
-                    for(let i=0; i<9; i++) document.write('<div class="chest-card" onclick="openChest(this)"><img src="chest.png" class="chest-img"></div>');
-                </script>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px;">
+                <script>for(let i=0; i<9; i++) document.write('<div onclick="openChest(this)"><img src="chest.png" style="width:100%; cursor:pointer;"></div>');</script>
             </div>
         </div>
     </div>
-    
     <div class="modal" id="winModal">
         <div class="modal-box">
             <div id="resultArea"></div>
             <div id="prizeIdDisp"></div>
-            <p style="font-size: 11px; opacity: 0.8; margin-top: 15px;">С скриншотты ботқа жіберіңіз ✅</p>
-            <button class="ok-btn" onclick="window.Telegram.WebApp.close()">ОК</button>
+            <p style="font-size: 11px; opacity: 0.8; margin-top: 15px;">Скриншотты ботқа жіберіңіз ✅</p>
+            <button class="ok-btn" onclick="sendCloseStatus()">ОК</button>
         </div>
     </div>
-
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
         const tg = window.Telegram.WebApp; tg.expand();
         particlesJS("particles-js", {"particles":{"number":{"value":40},"color":{"value":"#d4af37"},"size":{"value":2},"move":{"enable":true,"speed":0.5}}});
-        
         const urlParams = new URLSearchParams(window.location.search);
-        const userId = urlParams.get('id') || "ID ЖОҚ";
+        const userId = urlParams.get('id') || "user";
         const prizeFromBot = urlParams.get('prize') || "ПАРФЮМ"; 
-        const attemptId = urlParams.get('attempt') || "0000"; // Боттан келетін бірегей ID
+        const attemptId = urlParams.get('attempt') || "0000";
         const uniqueKey = `nazz_win_${userId}_${attemptId}`;
-
         document.getElementById('userIdDisp').innerText = userId;
-
         window.onload = () => { if (localStorage.getItem(uniqueKey)) showWin(localStorage.getItem(uniqueKey)); };
         function showChests() { document.getElementById('prizeShowcaseArea').style.display = 'none'; document.getElementById('chestsArea').style.display = 'block'; }
-        
-        function openChest(el) { 
-            localStorage.setItem(uniqueKey, prizeFromBot); 
-            el.innerHTML = '<img src="chest.png" class="chest-img" style="filter: brightness(0.5);">'; // Ашылған қобдиша эффектісі
-            setTimeout(() => { 
-                showWin(prizeFromBot); 
-                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); 
-            }, 800); 
-        }
-
+        function openChest(el) { localStorage.setItem(uniqueKey, prizeFromBot); setTimeout(() => { showWin(prizeFromBot); confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); }, 800); }
         function showWin(prize) {
-            const prizeImages = { 
-                "Алтын":"golden.png", "Айфон":"iphone.png", "Дайсон":"dyson.png", "Парфюм":"parfum.png", 
-                "Косметичка":"bag.png", "Косметика":"cosmetic.png", "Көлік":"elantra.png", "100.000 тг":"money.png", 
-                "Қытайға бизнес тур":"china.png", "Satwár":"satuar.png", "Кушон":"cushion.png", "Назимен адвент":"nazzi.png" 
-            };
-            document.getElementById('prizeShowcaseArea').style.display = 'none'; 
-            document.getElementById('chestsArea').style.display = 'none';
-            document.getElementById('resultArea').innerHTML = `
-                <h1 style="color:var(--gold); font-weight:900;">ҚҰТТЫҚТАЙМЫЗ!</h1>
-                <img src="${prizeImages[prize] || 'parfum.png'}" class="win-img">
-                <div style="font-size:1.5rem; font-weight:900; color:#fff; text-transform:uppercase;">${prize}</div>
-            `;
-            // ID көрсету (Клиент скриншот жібергенде осыны тексересің)
+            const prizeImages = { "Алтын":"golden.png", "Айфон":"iphone.png", "Дайсон":"dyson.png", "Парфюм":"parfum.png", "Косметичка":"bag.png", "Косметика":"cosmetic.png", "Көлік":"elantra.png", "100.000 тг":"money.png", "Қытайға бизнес тур":"china.png", "Satwár":"satuar.png", "Кушон":"cushion.png", "Назимен адвент":"nazzi.png" };
+            document.getElementById('prizeShowcaseArea').style.display = 'none'; document.getElementById('chestsArea').style.display = 'none';
+            document.getElementById('resultArea').innerHTML = `<h1 style="color:var(--gold); font-weight:900;">ҚҰТТЫҚТАЙМЫЗ!</h1><img src="${prizeImages[prize] || 'parfum.png'}" class="win-img"><div style="font-size:1.5rem; font-weight:900; color:#fff; text-transform:uppercase;">${prize}</div>`;
             document.getElementById('prizeIdDisp').innerText = `GIFT ID: ${attemptId}`;
             document.getElementById('winModal').style.display = 'flex';
         }
+        function sendCloseStatus() { tg.sendData("gift_collected"); tg.close(); }
     </script>
 </body>
 </html>
