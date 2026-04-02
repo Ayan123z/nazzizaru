@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nazimen BNS | Final Luxury</title>
+    <title>Nazimen BNS | Final Luxury Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <style>
-        :root { --gold: #d4af37; --gold-glow: rgba(212, 175, 55, 0.4); }
+        :root { --gold: #d4af37; --gold-glow: rgba(212, 175, 55, 0.3); }
         body { 
             background: #000; color: #fff; font-family: 'Montserrat', sans-serif; 
             margin: 0; overflow: hidden; -webkit-tap-highlight-color: transparent;
         }
         
-        /* 🕸 НӘЗІК ЖӘНЕ ЖҰҚА ФОН */
+        /* ✨ ЖЕҢІЛ АЛТЫН ТҮСТЕС ЭФФЕКТ (GOLD DUST) */
         #particles-js { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            z-index: 1; pointer-events: none; opacity: 0.5; /* Фонды жұмсарту */
+            z-index: 1; pointer-events: none;
         }
 
         .container { 
@@ -30,37 +30,36 @@
         .prize-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; margin: 20px 0; }
         
         .grid-item { 
-            background: rgba(255, 255, 255, 0.01); /* Өте мөлдір */
-            border: 1px solid rgba(212, 175, 55, 0.12); 
+            background: rgba(255, 255, 255, 0.02); 
+            border: 1px solid rgba(212, 175, 55, 0.15); 
             border-radius: 12px; padding: 15px 5px; 
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            backdrop-filter: blur(1px);
+            backdrop-filter: blur(2px);
         }
         .grid-item img { width: 70%; height: 45px; object-fit: contain; }
-        .grid-item span { font-size: 0.55rem; font-weight: 800; margin-top: 8px; color: #999; text-align: center; text-transform: uppercase; }
+        .grid-item span { font-size: 0.55rem; font-weight: 800; margin-top: 8px; color: #aaa; text-align: center; text-transform: uppercase; }
 
-        /* 🚗 ELANTRA ACCENT */
+        /* 🚗 ELANTRA CENTER ACCENT (1.25X) */
         .car-accent { 
             grid-column: 2; grid-row: 2; border: 2px solid var(--gold); 
             box-shadow: 0 0 25px var(--gold-glow); transform: scale(1.25); 
-            background: rgba(212, 175, 55, 0.05); z-index: 20; 
+            background: rgba(212, 175, 55, 0.08); z-index: 20; 
         }
 
         .btn-main { 
             background: linear-gradient(45deg, #bf953f, #fcf6ba, #bf953f); 
             color: #000; border: none; width: 90%; padding: 20px; 
             border-radius: 50px; font-size: 1.1rem; font-weight: 900; 
-            margin-top: 25px; cursor: pointer; box-shadow: 0 10px 30px rgba(212,175,55,0.3); 
+            margin-top: 25px; cursor: pointer; box-shadow: 0 10px 30px rgba(212,175,55,0.4); 
         }
 
         #chestView { display: none; width: 100%; text-align: center; }
         .chests-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 15px; }
 
-        /* 🎰 ЖҰМСАҚ ШЕЙК */
+        /* 🎰 ИНТРИГА (0.7s) */
         .box-item.shake { animation: lightShake 0.35s ease-in-out infinite; filter: drop-shadow(0 0 15px var(--gold)); }
-        @keyframes lightShake { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(3deg); } 75% { transform: rotate(-3deg); } }
+        @keyframes lightShake { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(4deg); } 75% { transform: rotate(-4deg); } }
         
-        /* 🏆 МОДАЛЬДЫ ТЕРЕЗЕ (СЫЙЛЫҚ СУРЕТІМЕН) */
         .modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.98); display:none; align-items:center; justify-content:center; z-index:2000; }
         .modal-box { border: 2px solid var(--gold); border-radius: 30px; width: 85%; padding: 35px 20px; text-align: center; background: #000; box-shadow: 0 0 50px var(--gold-glow); }
         
@@ -117,16 +116,30 @@
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
-        // НӘЗІК ФОН БАПТАУЛАРЫ
+        // ✨ НӘЗІК ЖӘНЕ КЕДЕРГІ КЕЛТІРМЕЙТІН АЛТЫН ЭФФЕКТ
         particlesJS("particles-js", {
             "particles": {
-                "number": { "value": 50, "density": { "enable": true, "value_area": 800 } },
+                "number": { "value": 60, "density": { "enable": true, "value_area": 800 } },
                 "color": { "value": "#d4af37" },
                 "shape": { "type": "circle" },
-                "opacity": { "value": 0.2 },
-                "size": { "value": 2 },
-                "line_linked": { "enable": true, "distance": 150, "color": "#d4af37", "opacity": 0.15, "width": 0.5 },
-                "move": { "enable": true, "speed": 1 }
+                "opacity": { 
+                    "value": 0.3, 
+                    "random": true, 
+                    "anim": { "enable": true, "speed": 1, "opacity_min": 0.1, "sync": false } 
+                },
+                "size": { 
+                    "value": 2.5, 
+                    "random": true, 
+                    "anim": { "enable": true, "speed": 2, "size_min": 0.5, "sync": false } 
+                },
+                "line_linked": { "enable": false }, // Сызықтарды өшірдік (кедергі жасамау үшін)
+                "move": { 
+                    "enable": true, 
+                    "speed": 0.8, 
+                    "direction": "top", // Жоғары қарай баяу қалқиды
+                    "random": true, 
+                    "out_mode": "out" 
+                }
             }
         });
 
