@@ -9,87 +9,32 @@
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <style>
         :root { --gold: #d4af37; --gold-glow: rgba(212, 175, 55, 0.6); --bg: #01040a; }
-        
         body { 
-            background: linear-gradient(rgba(1, 4, 10, 0.92), rgba(5, 10, 20, 0.92)), 
-                        url('satuar.png');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            color: #fff;
-            font-family: 'Montserrat', sans-serif;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            overflow-x: hidden;
-            min-height: 100vh;
+            background: linear-gradient(rgba(1, 4, 10, 0.95), rgba(5, 10, 20, 0.95));
+            color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; min-height: 100vh;
         }
-
         #particles-js { position: fixed; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-        
-        .header { width: 100%; padding: 15px 25px; display: flex; justify-content: space-between; font-size: 0.8rem; z-index: 10; border-bottom: 1px solid rgba(212, 175, 55, 0.15); backdrop-filter: blur(10px); box-sizing: border-box; }
+        .header { width: 100%; padding: 15px 25px; display: flex; justify-content: space-between; font-size: 0.8rem; z-index: 10; border-bottom: 1px solid rgba(212, 175, 55, 0.1); box-sizing: border-box; }
         .id-val { color: var(--gold); font-weight: 900; }
-
         .container { width: 100%; max-width: 480px; padding: 15px; box-sizing: border-box; z-index: 10; display: flex; flex-direction: column; align-items: center; }
+        .promo-text { color: var(--gold); font-weight: 900; font-size: 1rem; text-align: center; text-transform: uppercase; margin: 20px 0; line-height: 1.4; letter-spacing: 1px; }
+        .section-title { font-weight: 700; font-size: 0.75rem; color: #888; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 2px; }
+
+        /* 12 ұяшықтық сетка (4 қатар) */
+        .prize-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; margin-bottom: 30px; }
+        .prize-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 12px; padding: 10px 5px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         
-        .satuar-logo { width: 180px; margin: 15px 0; filter: drop-shadow(0 0 15px var(--gold)); animation: float 3s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-
-        .section-title { font-weight: 900; font-size: 0.9rem; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; text-align: center; }
-
-        /* Барлық сыйлықты қатар қылып сыйғызу */
-        .prize-grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); /* 3 баған */
-            gap: 8px; 
-            width: 100%; 
-            margin-bottom: 25px; 
-        }
+        /* Көлік ортада */
+        .car-highlight { grid-column: 2; border: 2px solid var(--gold); background: rgba(212, 175, 55, 0.08); box-shadow: 0 0 15px var(--gold-glow); transform: scale(1.05); }
         
-        .prize-card { 
-            background: rgba(5, 10, 20, 0.85); 
-            border: 1px solid var(--gold); 
-            border-radius: 12px; 
-            padding: 10px 5px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            backdrop-filter: blur(5px);
-            transition: 0.3s;
-        }
+        .prize-img { width: 80%; height: 45px; object-fit: contain; margin-bottom: 5px; }
+        .prize-name { font-size: 0.58rem; font-weight: 800; text-transform: uppercase; text-align: center; }
 
-        .prize-img { width: 100%; height: 50px; object-fit: contain; margin-bottom: 5px; filter: drop-shadow(0 0 5px var(--gold-glow)); }
-        .prize-name { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; text-align: center; color: #fff; }
-
-        .find-btn { 
-            background: linear-gradient(45deg, #8a6d11, #f1d56e, #8a6d11); color: #000; border: none; width: 100%; padding: 18px; border-radius: 50px; 
-            font-size: 1.1rem; font-weight: 900; cursor: pointer; text-transform: uppercase; box-shadow: 0 5px 20px var(--gold); transition: 0.4s;
-        }
-
-        .chests-area { display: none; width: 100%; }
-        .chests-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px; }
-        .chest-card { cursor: pointer; transition: 0.3s; }
-        .chest-img { width: 100%; filter: drop-shadow(0 5px 15px #000); }
-
+        .find-btn { background: linear-gradient(45deg, #8a6d11, #f1d56e, #8a6d11); color: #000; border: none; width: 100%; padding: 18px; border-radius: 50px; font-size: 1.1rem; font-weight: 900; cursor: pointer; text-transform: uppercase; box-shadow: 0 5px 20px var(--gold); }
         .modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.98); display:none; align-items:center; justify-content:center; z-index:2000; }
-        .modal-box { 
-            background: #050a14; border: 3px solid var(--gold); border-radius: 40px; 
-            width: 85%; max-width: 380px; padding: 40px 20px; text-align: center; 
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.6);
-        }
-        .win-img { width: 180px; height: 180px; object-fit: contain; margin: 20px 0; filter: drop-shadow(0 0 20px var(--gold)); }
-        
-        .ok-btn { 
-            background: linear-gradient(45deg, #8a6d11, #f1d56e, #d4af37, #f1d56e, #8a6d11);
-            background-size: 200% auto;
-            color: #000; border: none; width: 100%; padding: 15px; border-radius: 50px; 
-            font-size: 1.1rem; font-weight: 900; cursor: pointer; animation: btn-shine 3s infinite; text-transform: uppercase;
-        }
-        @keyframes btn-shine { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
-
-        .shake { animation: shake 0.5s infinite; }
-        @keyframes shake { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(5deg); } 75% { transform: rotate(-5deg); } }
+        .modal-box { background: #050a14; border: 2px solid var(--gold); border-radius: 40px; width: 85%; padding: 40px 20px; text-align: center; }
+        .win-img { width: 180px; height: 180px; object-fit: contain; margin: 20px 0; }
+        .ok-btn { background: var(--gold); border: none; padding: 15px; border-radius: 50px; width: 100%; font-weight: 900; color: #000; margin-top: 20px; cursor: pointer;}
     </style>
 </head>
 <body>
@@ -98,91 +43,58 @@
         <div>USER ID: <span class="id-val" id="userIdDisp">...</span></div>
         <div style="color: #25d366; font-weight: 900;">LIVE 🟢</div>
     </div>
-
     <div class="container">
         <div id="prizeShowcaseArea">
-            <img src="satuar.png" class="satuar-logo">
+            <div class="promo-text">НАЗИМЕН ҚОБДИШАСЫН АШУ ҮШІН ТӨЛЕМ ЖАСАП, ЧЕК ЖІБЕРІҢІЗ</div>
             <div class="section-title">Сыйлықтар тізімі</div>
             <div class="prize-grid">
-                <div class="prize-card"><img src="elantra.png" class="prize-img"><div class="prize-name">Elantra</div></div>
-                <div class="prize-card"><img src="iphone.png" class="prize-img"><div class="prize-name">iPhone</div></div>
-                <div class="prize-card"><img src="dyson.png" class="prize-img"><div class="prize-name">Dyson</div></div>
-                <div class="prize-card"><img src="golden.png" class="prize-img"><div class="prize-name">Алтын</div></div>
-                <div class="prize-card"><img src="money.png" class="prize-img"><div class="prize-name">100.000 тг</div></div>
-                <div class="prize-card"><img src="china.png" class="prize-img"><div class="prize-name">Бизнес тур</div></div>
-                <div class="prize-card"><img src="advent.png" class="prize-img"><div class="prize-name">Адвент</div></div>
-                <div class="prize-card"><img src="parfum.png" class="prize-img"><div class="prize-name">Парфюм</div></div>
-                <div class="prize-card"><img src="bag.png" class="prize-img"><div class="prize-name">Косметичка</div></div>
-                <div class="prize-card"><img src="cosmetic.png" class="prize-img"><div class="prize-name">Косметика</div></div>
-                <div class="prize-card"><img src="cushion.png" class="prize-img"><div class="prize-name">Кушон</div></div>
-                <div class="prize-card" style="opacity:0.2; border-style:dashed;"><div class="prize-name">...</div></div>
+                <div></div>
+                <div class="prize-card car-highlight"><img src="elantra.png" class="prize-img"><div class="prize-name">ELANTRA</div></div>
+                <div></div>
+                <div class="prize-card"><img src="golden.png" class="prize-img"><div class="prize-name">АЛТЫН</div></div>
+                <div class="prize-card"><img src="iphone.png" class="prize-img"><div class="prize-name">IPHONE</div></div>
+                <div class="prize-card"><img src="dyson.png" class="prize-img"><div class="prize-name">DYSON</div></div>
+                <div class="prize-card"><img src="money.png" class="prize-img"><div class="prize-name">100.000 ТГ</div></div>
+                <div class="prize-card"><img src="parfum.png" class="prize-img"><div class="prize-name">ПАРФЮМ</div></div>
+                <div class="prize-card"><img src="china.png" class="prize-img"><div class="prize-name">БИЗНЕС ТУР</div></div>
+                <div class="prize-card"><img src="bag.png" class="prize-img"><div class="prize-name">КОСМЕТИЧКА</div></div>
+                <div class="prize-card"><img src="cosmetic.png" class="prize-img"><div class="prize-name">КОСМЕТИКА</div></div>
+                <div class="prize-card"><img src="cushion.png" class="prize-img"><div class="prize-name">КУШОН</div></div>
+                <div class="prize-card" style="grid-column: 2; border-color: var(--gold-glow);"><img src="satuar.png" class="prize-img"><div class="prize-name">SATWÁR</div></div>
             </div>
             <button class="find-btn" onclick="showChests()">🔍 Сыйлығымды табу</button>
         </div>
 
-        <div id="chestsArea" class="chests-area">
+        <div id="chestsArea" style="display: none; width: 100%;">
             <div class="section-title">Қобдишаны таңдаңыз</div>
-            <div class="chests-grid">
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px;">
                 <script>
-                    for(let i=0; i<9; i++) document.write('<div class="chest-card" onclick="openChest(this)"><img src="chest.png" class="chest-img"></div>');
+                    for(let i=0; i<9; i++) document.write('<div onclick="openChest(this)"><img src="chest.png" style="width:100%; cursor:pointer;"></div>');
                 </script>
             </div>
         </div>
     </div>
-
     <div class="modal" id="winModal">
-        <div class="modal-box">
-            <div id="resultArea"></div>
-            <p style="font-size: 11px; opacity: 0.8; margin-top: 15px;">Скриншотты ботқа жіберіңіз ✅</p>
-            <button class="ok-btn" onclick="window.Telegram.WebApp.close()">ОК</button>
-        </div>
+        <div class="modal-box"><div id="resultArea"></div><button class="ok-btn" onclick="window.Telegram.WebApp.close()">ОК</button></div>
     </div>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-        particlesJS("particles-js", {"particles":{"number":{"value":50},"color":{"value":"#d4af37"},"size":{"value":2},"move":{"enable":true,"speed":0.6}}});
-        
+        const tg = window.Telegram.WebApp; tg.expand();
+        particlesJS("particles-js", {"particles":{"number":{"value":40},"color":{"value":"#d4af37"},"size":{"value":2},"move":{"enable":true,"speed":0.5}}});
         const urlParams = new URLSearchParams(window.location.search);
-        const userId = urlParams.get('id') || "ID ЖОҚ";
-        const prizeFromBot = urlParams.get('prize') || "Парфюм"; 
+        const userId = urlParams.get('id') || "user";
+        const prizeFromBot = urlParams.get('prize') || "ПАРФЮМ"; 
         const attempt = urlParams.get('attempt') || "1";
         const uniqueKey = `nazz_win_${userId}_${attempt}`;
-
         document.getElementById('userIdDisp').innerText = userId;
-
-        window.onload = () => {
-            if (localStorage.getItem(uniqueKey)) showWin(localStorage.getItem(uniqueKey));
-        };
-
-        function showChests() {
-            document.getElementById('prizeShowcaseArea').style.display = 'none';
-            document.getElementById('chestsArea').style.display = 'block';
-        }
-
-        function openChest(el) {
-            el.classList.add('shake');
-            localStorage.setItem(uniqueKey, prizeFromBot);
-            setTimeout(() => {
-                showWin(prizeFromBot);
-                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-            }, 1200);
-        }
-
+        window.onload = () => { if (localStorage.getItem(uniqueKey)) showWin(localStorage.getItem(uniqueKey)); };
+        function showChests() { document.getElementById('prizeShowcaseArea').style.display = 'none'; document.getElementById('chestsArea').style.display = 'block'; }
+        function openChest(el) { localStorage.setItem(uniqueKey, prizeFromBot); setTimeout(() => { showWin(prizeFromBot); confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); }, 800); }
         function showWin(prize) {
-            const prizeImages = {
-                "Алтын": "golden.png", "Айфон": "iphone.png", "Дайсон": "dyson.png", "Парфюм": "parfum.png",
-                "Косметичка": "bag.png", "Косметика": "cosmetic.png", "Көлік": "elantra.png",
-                "100.000 тг": "money.png", "Кушон": "cushion.png", "Назимен адвент": "advent.png", "Қытайға бизнес тур": "china.png"
-            };
-            document.getElementById('prizeShowcaseArea').style.display = 'none';
-            document.getElementById('chestsArea').style.display = 'none';
-            document.getElementById('resultArea').innerHTML = `
-                <h2 style="color:var(--gold); font-weight:900; margin-bottom:10px;">ҚҰТТЫҚТАЙМЫЗ!</h2>
-                <img src="${prizeImages[prize] || 'parfum.png'}" class="win-img">
-                <div style="font-size:1.5rem; font-weight:900; color:#fff; text-transform:uppercase;">${prize}</div>
-            `;
+            const prizeImages = { "Алтын":"golden.png", "Айфон":"iphone.png", "Дайсон":"dyson.png", "Парфюм":"parfum.png", "Косметичка":"bag.png", "Косметика":"cosmetic.png", "Көлік":"elantra.png", "100.000 тг":"money.png", "Қытайға бизнес тур":"china.png", "Satwár":"satuar.png", "Кушон":"cushion.png" };
+            document.getElementById('prizeShowcaseArea').style.display = 'none'; document.getElementById('chestsArea').style.display = 'none';
+            document.getElementById('resultArea').innerHTML = `<h1 style="color:var(--gold); font-weight:900;">ҚҰТТЫҚТАЙМЫЗ!</h1><img src="${prizeImages[prize] || 'parfum.png'}" class="win-img"><div style="font-size:1.5rem; font-weight:900; color:#fff; text-transform:uppercase;">${prize}</div>`;
             document.getElementById('winModal').style.display = 'flex';
         }
     </script>
