@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nazimen BNS | Final Luxury Edition</title>
+    <title>Nazimen BNS | Final Luxury</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <style>
-        :root { --gold: #d4af37; --gold-glow: rgba(212, 175, 55, 0.3); }
+        :root { --gold: #d4af37; --gold-glow: rgba(212, 175, 55, 0.4); }
         body { 
             background: #000; color: #fff; font-family: 'Montserrat', sans-serif; 
             margin: 0; overflow: hidden; -webkit-tap-highlight-color: transparent;
         }
         
-        /* ✨ ЖЕҢІЛ АЛТЫН ТҮСТЕС ЭФФЕКТ (GOLD DUST) */
+        /* ✨ СКРИНШОТТАҒЫДАЙ NETWORK ЭФФЕКТІСІ */
         #particles-js { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            z-index: 1; pointer-events: none;
+            z-index: 1; pointer-events: none; opacity: 0.6;
         }
 
         .container { 
@@ -56,7 +56,6 @@
         #chestView { display: none; width: 100%; text-align: center; }
         .chests-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 15px; }
 
-        /* 🎰 ИНТРИГА (0.7s) */
         .box-item.shake { animation: lightShake 0.35s ease-in-out infinite; filter: drop-shadow(0 0 15px var(--gold)); }
         @keyframes lightShake { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(4deg); } 75% { transform: rotate(-4deg); } }
         
@@ -116,31 +115,31 @@
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
-        // ✨ НӘЗІК ЖӘНЕ КЕДЕРГІ КЕЛТІРМЕЙТІН АЛТЫН ЭФФЕКТ
+        // ✨ СКРИНШОТТАҒЫДАЙ АЛТЫН ТОР (NETWORK) БАПТАУЛАРЫ
         particlesJS("particles-js", {
             "particles": {
                 "number": { "value": 60, "density": { "enable": true, "value_area": 800 } },
                 "color": { "value": "#d4af37" },
                 "shape": { "type": "circle" },
-                "opacity": { 
-                    "value": 0.3, 
-                    "random": true, 
-                    "anim": { "enable": true, "speed": 1, "opacity_min": 0.1, "sync": false } 
+                "opacity": { "value": 0.3 },
+                "size": { "value": 3 },
+                "line_linked": { 
+                    "enable": true, 
+                    "distance": 150, 
+                    "color": "#d4af37", 
+                    "opacity": 0.4, 
+                    "width": 1 
                 },
-                "size": { 
-                    "value": 2.5, 
-                    "random": true, 
-                    "anim": { "enable": true, "speed": 2, "size_min": 0.5, "sync": false } 
-                },
-                "line_linked": { "enable": false }, // Сызықтарды өшірдік (кедергі жасамау үшін)
                 "move": { 
                     "enable": true, 
-                    "speed": 0.8, 
-                    "direction": "top", // Жоғары қарай баяу қалқиды
+                    "speed": 1.2, 
+                    "direction": "none", 
                     "random": true, 
                     "out_mode": "out" 
                 }
-            }
+            },
+            "interactivity": { "events": { "onhover": { "enable": false } } },
+            "retina_detect": true
         });
 
         const tg = window.Telegram.WebApp; tg.expand();
@@ -163,8 +162,6 @@
 
         function revealDrama(el) {
             if(isPlayed) return; el.classList.add('shake');
-            if(window.navigator.vibrate) window.navigator.vibrate(40);
-
             setTimeout(() => {
                 isPlayed = true; 
                 const imgFile = prizeImages[p] || "chest.png";
