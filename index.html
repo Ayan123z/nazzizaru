@@ -19,7 +19,7 @@
         .car-main { grid-column: span 2; height: 120px; border-width: 2px; position: relative; box-shadow: 0 0 20px var(--gold-glow); }
         .car-main .prize-img { height: 70px; }
         .main-tag { position: absolute; top: -10px; background: var(--gold); color: #000; padding: 2px 10px; border-radius: 20px; font-size: 0.6rem; font-weight: 900; }
-        .prize-name { font-size: 0.6rem; font-weight: 700; margin-top: 5px; color: #fff; text-transform: uppercase; }
+        .prize-name { font-size: 0.55rem; font-weight: 700; margin-top: 5px; color: #fff; text-transform: uppercase; }
         .chests-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 100%; margin-top: 10px; }
         .chest-card { cursor: pointer; transition: 0.3s; }
         .chest-img { width: 100%; filter: drop-shadow(0 0 10px var(--gold-glow)); }
@@ -35,7 +35,7 @@
         <div style="color: #25d366; font-weight: 900;">LIVE 🟢</div>
     </div>
     <div class="container" id="mainView">
-        <div class="section-title">Сыйлығыңызды <br> қобдишадан алыңыз</div>
+        <div class="section-title">Nazimen қобдишасынан <br> сыйлығыңызды алыңыз</div>
         <div class="prize-grid">
             <div class="prize-card"><img src="money.png" class="prize-img"><div class="prize-name">1 МЛН ₸</div></div>
             <div class="prize-card"><img src="iphone.png" class="prize-img"><div class="prize-name">iPhone</div></div>
@@ -50,7 +50,7 @@
             <div class="prize-card"><img src="cosmetic.png" class="prize-img"><div class="prize-name">Косметика</div></div>
             <div class="prize-card"><img src="cushion.png" class="prize-img"><div class="prize-name">Кушон</div></div>
             <div class="prize-card"><img src="bag.png" class="prize-img"><div class="prize-name">Косметичка</div></div>
-            <div class="prize-card"><img src="satuar.png" class="prize-img"><div class="prize-name">Сотуар</div></div>
+            <div class="prize-card"><img src="china.png" class="prize-img"><div class="prize-name">Қытайға бизнес тур</div></div>
         </div>
         <button class="open-btn" onclick="goToChests()">🎁 СЫЙЛЫҒЫМДЫ АШУ</button>
     </div>
@@ -78,7 +78,7 @@
             const prizeImgs = { 
                 "Парфюм": "parfum.png", "Кушон": "cushion.png", "Косметичка": "bag.png", "Косметика": "cosmetic.png", 
                 "Elantra": "elantra.png", "iPhone": "iphone.png", "1 МЛН ₸": "money.png", "Алтын": "golden.png", 
-                "Dyson": "dyson.png", "Адвент": "nazzi.png", "Сотуар": "satuar.png", "Қытайға бизнес тур": "money.png" 
+                "Dyson": "dyson.png", "Адвент": "nazzi.png", "Қытайға бизнес тур": "china.png" 
             };
             const img = prizeImgs[prizeFromBot] || "nazzi.png";
             document.getElementById('prizeResult').innerHTML = `<img src="${img}" class="res-img"><h3 style="font-size:1.5rem; margin:0;">${prizeFromBot}</h3>`;
