@@ -73,8 +73,19 @@
         const prizeFromBot = urlParams.get('prize') || "Парфюм";
         const attempt = urlParams.get('attempt') || "6000001";
         document.getElementById('userIdDisp').innerText = attempt;
-        function goToChests() { document.getElementById('mainView').style.display = 'none'; document.getElementById('chestView').style.display = 'flex'; }
+        
+        function goToChests() {
+            if(localStorage.getItem('used_' + attempt)) {
+                alert('Бұл билет қолданылған!');
+                tg.close();
+                return;
+            }
+            document.getElementById('mainView').style.display = 'none';
+            document.getElementById('chestView').style.display = 'flex';
+        }
+        
         function revealPrize() {
+            localStorage.setItem('used_' + attempt, 'true');
             const prizeImgs = { 
                 "Парфюм": "parfum.png", "Кушон": "cushion.png", "Косметичка": "bag.png", "Косметика": "cosmetic.png", 
                 "Elantra": "elantra.png", "iPhone": "iphone.png", "1 МЛН ₸": "money.png", "Алтын": "golden.png", 
