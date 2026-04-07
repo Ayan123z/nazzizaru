@@ -8,7 +8,8 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         :root { --gold: #d4af37; --gold-glow: rgba(212, 175, 55, 0.7); --bg: #000000; }
-        body { background-color: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; user-select: none; }
+        /* user-select: none - Мәтінді көшіруді блоктайды */
+        body { background-color: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; user-select: none; -webkit-user-select: none; }
         .header { width: 100%; padding: 20px; display: flex; justify-content: space-between; font-size: 0.9rem; border-bottom: 1px solid rgba(212, 175, 55, 0.3); box-sizing: border-box; position: sticky; top: 0; background: black; z-index: 100; }
         .id-val { color: var(--gold); font-weight: 900; }
         .container { width: 100%; max-width: 500px; padding: 15px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; }
@@ -34,6 +35,7 @@
         <div>БИЛЕТ: <span class="id-val" id="userIdDisp">...</span></div>
         <div style="color: #25d366; font-weight: 900;">LIVE 🟢</div>
     </div>
+    
     <div class="container" id="mainView">
         <div class="section-title">Nazimen қобдишасынан <br> сыйлығыңызды алыңыз</div>
         <div class="prize-grid">
@@ -50,33 +52,66 @@
             <div class="prize-card"><img src="cosmetic.png" class="prize-img"><div class="prize-name">Косметика</div></div>
             <div class="prize-card"><img src="cushion.png" class="prize-img"><div class="prize-name">Кушон</div></div>
             <div class="prize-card"><img src="bag.png" class="prize-img"><div class="prize-name">Косметичка</div></div>
-            <div class="prize-card"><img src="china.png" class="prize-img"><div class="prize-name">Қытайға бизнес тур</div></div>
+            <div class="prize-card"><img src="china.png" class="prize-img"><div class="prize-name">Бизнес тур</div></div>
         </div>
         <button class="open-btn" onclick="goToChests()">🎁 СЫЙЛЫҒЫМДЫ АШУ</button>
     </div>
+
     <div class="container" id="chestView" style="display:none;">
         <div class="section-title">Қобдишаны таңдаңыз</div>
-        <div class="chests-grid"><script>for(let i=0; i<12; i++) { document.write(`<div class="chest-card" onclick="revealPrize()"><img src="chest.png" class="chest-img"></div>`); }</script></div>
+        <div class="chests-grid">
+            <script>
+                for(let i=0; i<12; i++) { 
+                    document.write(`<div class="chest-card" onclick="revealPrize()"><img src="chest.png" class="chest-img"></div>`); 
+                }
+            </script>
+        </div>
     </div>
+
     <div class="modal" id="winModal">
         <div class="modal-box">
             <h2 style="color:var(--gold); margin-bottom:5px;">ҚҰТТЫҚТАЙМЫЗ!</h2>
             <p style="color:#888; font-size:0.8rem;">Сіздің ұтысыңыз:</p>
             <div id="prizeResult"></div>
-            <button onclick="window.Telegram.WebApp.close()" style="background:var(--gold); border:none; padding:15px; width:100%; border-radius:50px; font-weight:900; margin-top:20px;">БОТҚА ОРАЛУ</button>
+            <button onclick="closeApp()" style="background:var(--gold); color:#000; border:none; padding:15px; width:100%; border-radius:50px; font-weight:900; margin-top:20px; cursor:pointer;">БОТҚА ОРАЛУ</button>
         </div>
     </div>
+
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
-        const tg = window.Telegram.WebApp; tg.expand();
+        // 🛑 ҚАУІПСІЗДІК: ОҢ ЖАҚ БАТЫРМА МЕН F12 БЛОКТАУ
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123) return false; // F12
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; // Ctrl+Shift+I
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; // Ctrl+Shift+J
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; // Ctrl+U
+        };
+
+        const tg = window.Telegram.WebApp; 
+        tg.expand();
+        
         const urlParams = new URLSearchParams(window.location.search);
-        const prizeFromBot = urlParams.get('prize') || "Парфюм";
-        const attempt = urlParams.get('attempt') || "6000001";
+        const attempt = urlParams.get('uid') || "БЕЛГІСІЗ"; // Python-нан uid келеді
+        const hash = urlParams.get('hash') || "0"; 
+        
+        // 🔐 Боттан келген шифрланған сыйлықты оқу (Base64 decode)
+        let prizeFromBot = "Парфюм";
+        try {
+            let encodedPrize = urlParams.get('p');
+            if (encodedPrize) {
+                prizeFromBot = decodeURIComponent(escape(window.atob(encodedPrize)));
+            }
+        } catch(e) {
+            console.log("Шифрды оқуда қате шықты, стандартты сыйлық берілді.");
+        }
+
         document.getElementById('userIdDisp').innerText = attempt;
         
         function goToChests() {
-            if(localStorage.getItem('used_' + attempt)) {
-                alert('Бұл билет қолданылған!');
+            // LocalStorage арқылы бір реттік блок (хэш арқылы)
+            if(localStorage.getItem('opened_' + hash)) {
+                alert('❌ Сіз бұл чектің сыйлығын ашып қойғансыз!');
                 tg.close();
                 return;
             }
@@ -85,16 +120,25 @@
         }
         
         function revealPrize() {
-            localStorage.setItem('used_' + attempt, 'true');
+            localStorage.setItem('opened_' + hash, 'true'); // Бұл хэшті қолданылды деп сақтау
+            
             const prizeImgs = { 
                 "Парфюм": "parfum.png", "Кушон": "cushion.png", "Косметичка": "bag.png", "Косметика": "cosmetic.png", 
-                "Elantra": "elantra.png", "iPhone": "iphone.png", "1 МЛН ₸": "money.png", "Алтын": "golden.png", 
-                "Dyson": "dyson.png", "Адвент": "nazzi.png", "Қытайға бизнес тур": "china.png" 
+                "Hyundai Elantra": "elantra.png", "iPhone 17 Pro (XR)": "iphone.png", "1 000 000₸ (VIP)": "money.png", "Алтын": "golden.png", 
+                "Dyson": "dyson.png", "Адвент": "nazzi.png", "Сотуар": "golden.png" 
             };
+            
             const img = prizeImgs[prizeFromBot] || "nazzi.png";
-            document.getElementById('prizeResult').innerHTML = `<img src="${img}" class="res-img"><h3 style="font-size:1.5rem; margin:0;">${prizeFromBot}</h3>`;
+            document.getElementById('prizeResult').innerHTML = `<img src="${img}" class="res-img"><h3 style="font-size:1.5rem; margin:0; color:#fff;">${prizeFromBot}</h3>`;
             document.getElementById('winModal').style.display = 'flex';
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+            
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, zIndex: 3000 });
+        }
+
+        function closeApp() {
+            // Ботқа "жаңарту" керектігін айту (міндетті емес, бірақ жақсы практика)
+            try { tg.sendData("update_tickets"); } catch(e) {}
+            tg.close();
         }
     </script>
 </body>
