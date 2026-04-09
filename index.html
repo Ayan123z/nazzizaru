@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         :root { --gold: #d4af37; --gold-glow: rgba(212, 175, 55, 0.7); --bg: #000000; }
-        /* user-select: none - Мәтінді көшіруді блоктайды */
+        /* Мәтінді көшіруді блоктайды */
         body { background-color: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; user-select: none; -webkit-user-select: none; }
         .header { width: 100%; padding: 20px; display: flex; justify-content: space-between; font-size: 0.9rem; border-bottom: 1px solid rgba(212, 175, 55, 0.3); box-sizing: border-box; position: sticky; top: 0; background: black; z-index: 100; }
         .id-val { color: var(--gold); font-weight: 900; }
@@ -32,7 +32,7 @@
 </head>
 <body>
     <div class="header">
-        <div>БИЛЕТ: <span class="id-val" id="userIdDisp">...</span></div>
+        <div>ID: <span class="id-val" id="userIdDisp">...</span></div>
         <div style="color: #25d366; font-weight: 900;">LIVE 🟢</div>
     </div>
     
@@ -91,26 +91,18 @@
         const tg = window.Telegram.WebApp; 
         tg.expand();
         
+        // URL-ден параметрлерді оқу (Жаңа ботқа бейімделген)
         const urlParams = new URLSearchParams(window.location.search);
-        const attempt = urlParams.get('uid') || "БЕЛГІСІЗ"; // Python-нан uid келеді
-        const hash = urlParams.get('hash') || "0"; 
         
-        // 🔐 Боттан келген шифрланған сыйлықты оқу (Base64 decode)
-        let prizeFromBot = "Парфюм";
-        try {
-            let encodedPrize = urlParams.get('p');
-            if (encodedPrize) {
-                prizeFromBot = decodeURIComponent(escape(window.atob(encodedPrize)));
-            }
-        } catch(e) {
-            console.log("Шифрды оқуда қате шықты, стандартты сыйлық берілді.");
-        }
-
-        document.getElementById('userIdDisp').innerText = attempt;
+        const userId = urlParams.get('id') || "БЕЛГІСІЗ";
+        const attemptId = urlParams.get('attempt') || "test_000"; // Боттағы unique_attempt осында келеді
+        let prizeFromBot = urlParams.get('prize') || "Парфюм"; 
+        
+        document.getElementById('userIdDisp').innerText = userId;
         
         function goToChests() {
-            // LocalStorage арқылы бір реттік блок (хэш арқылы)
-            if(localStorage.getItem('opened_' + hash)) {
+            // LocalStorage арқылы дәл осы attempt-ті қайта ашуды блоктаймыз
+            if(localStorage.getItem('opened_' + attemptId)) {
                 alert('❌ Сіз бұл чектің сыйлығын ашып қойғансыз!');
                 tg.close();
                 return;
@@ -120,12 +112,14 @@
         }
         
         function revealPrize() {
-            localStorage.setItem('opened_' + hash, 'true'); // Бұл хэшті қолданылды деп сақтау
+            // Сыйлық ашылған сәтте жадқа сақтаймыз
+            localStorage.setItem('opened_' + attemptId, 'true'); 
             
             const prizeImgs = { 
-                "Парфюм": "parfum.png", "Кушон": "cushion.png", "Косметичка": "bag.png", "Косметика": "cosmetic.png", 
-                "Hyundai Elantra": "elantra.png", "iPhone 17 Pro (XR)": "iphone.png", "1 000 000₸ (VIP)": "money.png", "Алтын": "golden.png", 
-                "Dyson": "dyson.png", "Адвент": "nazzi.png", "Сотуар": "golden.png" 
+                "Парфюм": "parfum.png", 
+                "Кушон": "cushion.png", 
+                "Косметичка": "bag.png", 
+                "Косметика": "cosmetic.png" 
             };
             
             const img = prizeImgs[prizeFromBot] || "nazzi.png";
@@ -136,7 +130,6 @@
         }
 
         function closeApp() {
-            // Ботқа "жаңарту" керектігін айту (міндетті емес, бірақ жақсы практика)
             try { tg.sendData("update_tickets"); } catch(e) {}
             tg.close();
         }
